@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom">
+<Document>
+	<name>Yanahuara.kml</name>
+	<Style id="sh_ylw-pushpin589">
+		<IconStyle>
+			<scale>1.3</scale>
+			<Icon>
+				<href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>
+			</Icon>
+			<hotSpot x="20" y="2" xunits="pixels" yunits="pixels"/>
+		</IconStyle>
+		<LineStyle>
+			<color>ff005500</color>
+		</LineStyle>
+		<PolyStyle>
+			<color>00ffffff</color>
+		</PolyStyle>
+	</Style>
+	<StyleMap id="msn_ylw-pushpin589">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#sn_ylw-pushpin587</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#sh_ylw-pushpin589</styleUrl>
+		</Pair>
+	</StyleMap>
+	<Style id="sn_ylw-pushpin587">
+		<IconStyle>
+			<scale>1.1</scale>
+			<Icon>
+				<href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>
+			</Icon>
+			<hotSpot x="20" y="2" xunits="pixels" yunits="pixels"/>
+		</IconStyle>
+		<LineStyle>
+			<color>ff005500</color>
+		</LineStyle>
+		<PolyStyle>
+			<color>00ffffff</color>
+		</PolyStyle>
+	</Style>
+	<Folder>
+		<name>Yanahuara</name>
+		<Folder>
+			<name>Urb. Fatima</name>
+			<Placemark>
+				<name>1.27.8-1</name>
+				<styleUrl>#msn_ylw-pushpin589</styleUrl>
+				<Polygon>
+					<tessellate>1</tessellate>
+					<outerBoundaryIs>
+						<LinearRing>
+							<coordinates>
+								-71.5697336173734,-16.40446132520133,0 -71.56960863056411,-16.40511028844176,0 -71.56929361756991,-16.40504585534142,0 -71.5693954100949,-16.40457889589567,0 -71.56947655030395,-16.40441388178979,0 -71.5697336173734,-16.40446132520133,0 
+							</coordinates>
+						</LinearRing>
+					</outerBoundaryIs>
+				</Polygon>
+			</Placemark>
+			<Placemark>
+				<name>1.27.8-2</name>
+				<styleUrl>#msn_ylw-pushpin589</styleUrl>
+				<Polygon>
+					<tessellate>1</tessellate>
+					<outerBoundaryIs>
+						<LinearRing>
+							<coordinates>
+								-71.56958522461643,-16.40512832595062,0 -71.56950673933591,-16.40555336013066,0 -71.56943453602194,-16.40610516830981,0 -71.56922119263686,-16.40606958044117,0 -71.56916636237827,-16.40562628755907,0 -71.56928470340881,-16.40508601546567,0 -71.56958522461643,-16.40512832595062,0 
+							</coordinates>
+						</LinearRing>
+					</outerBoundaryIs>
+				</Polygon>
+			</Placemark>
+			<Placemark>
+				<name>1.27.8-3</name>
+				<styleUrl>#msn_ylw-pushpin589</styleUrl>
+				<Polygon>
+					<tessellate>1</tessellate>
+					<outerBoundaryIs>
+						<LinearRing>
+							<coordinates>
+								-71.57007278818293,-16.4045000300971,0 -71.57007285334215,-16.40479058797929,0 -71.56999115886244,-16.40520911269824,0 -71.56964371351656,-16.40512911017006,0 -71.56977614178507,-16.40446274220578,0 -71.57007278818293,-16.4045000300971,0 
+							</coordinates>
+						</LinearRing>
+					</outerBoundaryIs>
+				</Polygon>
+			</Placemark>
+			<Placemark>
+				<name>1.27.8-4</name>
+				<styleUrl>#msn_ylw-pushpin589</styleUrl>
+				<Polygon>
+					<tessellate>1</tessellate>
+					<outerBoundaryIs>
+						<LinearRing>
+							<coordinates>
+								-71.5699774357916,-16.40523737442391,0 -71.56993728768181,-16.40556656090212,0 -71.56998738567766,-16.40560373576131,0 -71.57008569764312,-16.40564412707084,0 -71.5700291258354,-16.40618016948345,0 -71.56946812214645,-16.40610189579365,0 -71.56954970803436,-16.40560810544278,0 -71.56963771322239,-16.40516079070122,0 -71.5699774357916,-16.40523737442391,0 
+							</coordinates>
+						</LinearRing>
+					</outerBoundaryIs>
+				</Polygon>
+			</Placemark>
+			<Placemark>
+				<name>1.27.8-5</name>
+				<styleUrl>#msn_ylw-pushpin589</styleUrl>
+				<Polygon>
+					<tessellate>1</tessellate>
+					<outerBoundaryIs>
+						<LinearRing>
+							<coordinates>
+								-71.57008771223073,-16.40624739960309,0 -71.57013510023432,-16.40564683636653,0 -71.56997892930521,-16.40550173457499,0 -71.57008109471353,-16.40491237135996,0 -71.57072023597186,-16.40494923142062,0 -71.57075763778263,-16.40525604810886,0 -71.57055219459323,-16.4054363012572,0 -71.57067091854798,-16.40612584809541,0 -71.57048484652172,-16.40668534000253,0 -71.57034159613157,-16.4065634803571,0 -71.5700889439794,-16.40653357958707,0 -71.57008771223073,-16.40624739960309,0 
+							</coordinates>
+						</LinearRing>
+					</outerBoundaryIs>
+				</Polygon>
+			</Placemark>
+		</Folder>
+		<Folder>
+			<name>Coop. Guillermo Torre Blanca</name>
+			<Placemark>
+				<name>1.27.9-1</name>
+				<styleUrl>#msn_ylw-pushpin589</styleUrl>
+				<Polygon>
+					<tessellate>1</tessellate>
+					<outerBoundaryIs>
+						<LinearRing>
+							<coordinates>
+								-71.5691181850794,-16.40612958436831,0 -71.56902445223957,-16.40647251338931,0 -71.56877810147216,-16.40692173861606,0 -71.56858622037824,-16.406772134112,0 -71.56868778347617,-16.40601887564904,0 -71.5691181850794,-16.40612958436831,0 
+							</coordinates>
+						</LinearRing>
+					</outerBoundaryIs>
+				</Polygon>
+			</Placemark>
+			<Placemark>
+				<name>1.27.9-2</name>
+				<styleUrl>#msn_ylw-pushpin589</styleUrl>
+				<Polygon>
+					<tessellate>1</tessellate>
+					<outerBoundaryIs>
+						<LinearRing>
+							<coordinates>
+								-71.56942610747171,-16.40615419274631,0 -71.56936702770317,-16.40651546314441,0 -71.56921959099081,-16.40701131487958,0 -71.56887477106564,-16.40688067732256,0 -71.56913186739426,-16.40642219859379,0 -71.56918966035103,-16.4061198084904,0 -71.56942610747171,-16.40615419274631,0 
+							</coordinates>
+						</LinearRing>
+					</outerBoundaryIs>
+				</Polygon>
+			</Placemark>
+			<Placemark>
+				<name>1.27.9-3</name>
+				<styleUrl>#msn_ylw-pushpin589</styleUrl>
+				<Polygon>
+					<tessellate>1</tessellate>
+					<outerBoundaryIs>
+						<LinearRing>
+							<coordinates>
+								-71.56982769244175,-16.40619014719864,0 -71.5697617164349,-16.40666154818937,0 -71.56966377208748,-16.40711965876363,0 -71.56927973436193,-16.40702810542576,0 -71.56935742076327,-16.40670295831147,0 -71.56946748510148,-16.40615068006653,0 -71.56982769244175,-16.40619014719864,0 
+							</coordinates>
+						</LinearRing>
+					</outerBoundaryIs>
+				</Polygon>
+			</Placemark>
+			<Placemark>
+				<name>1.27.9-4</name>
+				<styleUrl>#msn_ylw-pushpin589</styleUrl>
+				<Polygon>
+					<tessellate>1</tessellate>
+					<outerBoundaryIs>
+						<LinearRing>
+							<coordinates>
+								-71.57005238535909,-16.40659984424233,0 -71.57023118381788,-16.40662825240293,0 -71.57037369778821,-16.40669246626459,0 -71.57066533683933,-16.40687679981202,0 -71.57063437417918,-16.40723884419583,0 -71.57022168358429,-16.40734591249159,0 -71.5701819916538,-16.40722789371745,0 -71.56989286613131,-16.407258106578,0 -71.56977046764078,-16.40842839581748,0 -71.56939558365694,-16.40838803674851,0 -71.56945638883403,-16.40800718453928,0 -71.56969577201336,-16.40710153107738,0 -71.56975267207503,-16.40679556119022,0 -71.56986751498728,-16.40621699963711,0 -71.57005214119529,-16.40623219955235,0 -71.57005238535909,-16.40659984424233,0 
+							</coordinates>
+						</LinearRing>
+					</outerBoundaryIs>
+				</Polygon>
+			</Placemark>
+			<Placemark>
+				<name>1.27.9-5</name>
+				<styleUrl>#msn_ylw-pushpin589</styleUrl>
+				<Polygon>
+					<tessellate>1</tessellate>
+					<outerBoundaryIs>
+						<LinearRing>
+							<coordinates>
+								-71.56965246555868,-16.40714424935392,0 -71.56942720009401,-16.4079714117628,0 -71.56935135440605,-16.40837728701529,0 -71.56849775822151,-16.40818362757314,0 -71.56861600008503,-16.40762764804672,0 -71.56907117923262,-16.40772445651462,0 -71.56923825053696,-16.40705156816201,0 -71.56965246555868,-16.40714424935392,0 
+							</coordinates>
+						</LinearRing>
+					</outerBoundaryIs>
+				</Polygon>
+			</Placemark>
+			<Placemark>
+				<name>1.27.9-6</name>
+				<styleUrl>#msn_ylw-pushpin589</styleUrl>
+				<Polygon>
+					<tessellate>1</tessellate>
+					<outerBoundaryIs>
+						<LinearRing>
+							<coordinates>
+								-71.5692087085922,-16.40703081684999,0 -71.56901839426732,-16.40769671349432,0 -71.56862451996759,-16.40760013591978,0 -71.56882722961828,-16.40692599552834,0 -71.5692087085922,-16.40703081684999,0 
+							</coordinates>
+						</LinearRing>
+					</outerBoundaryIs>
+				</Polygon>
+			</Placemark>
+		</Folder>
+	</Folder>
+</Document>
+</kml>
