@@ -34,10 +34,10 @@
   #OBTENIENDO LAS BASES DE MANZANA  HUNTER ,JLB Y RIVERO ,LA JOYA ,SACHACA,UCHUMAYO,TIABAYA Y SOCABAYA 
   
   nc_HUNTER<-read.csv("~/claudia codigos r//Manzanas _Arequipa/Jacobo Hunter/Jacobo Hunter MZ.csv")
-  nc_JLB_RIVERO<-read.csv("~/claudia codigos r/Manzanas _Arequipa/JLByRivero/JLByRibero MZ.csv")
+  nc_JLB_RIVERO<-read.csv("~/CLAUDIA-DATOS-/JLByRivero_Mz_corregido.csv",sep = ",")
   nc_LAJOYA<-read.csv("~/claudia codigos r/Manzanas _Arequipa/La Joya/La Joya MZ.csv")
   nc_SACHACA<-read.csv("~/claudia codigos r/Manzanas _Arequipa/Sachaca/Sachaca_mz.csv",sep = ";")
-  nc_UCHUMAYO<-read.csv("~/claudia codigos r/Manzanas _Arequipa/Uchumayo/Uchumayo.csv")
+  nc_UCHUMAYO<-read.csv("~/claudia codigos r/Manzanas _Arequipa/Uchumayo/Uchumayo.csv",sep = ";")
   nc_TIABAYA<-read.csv("~/claudia codigos r/Manzanas _Arequipa/Tiabaya/Tiabaya.csv",sep = ";")
   nc_SOCABAYA<-read.csv("~/claudia codigos r/Manzanas _Arequipa/Socabaya/socabaya_mz.csv",sep = ";")
   
@@ -136,8 +136,15 @@
     attack_SOCABAYA  <- attack_db_1[(1==attack_db_1$P & 25==attack_db_1$D),]
     #Seleccionando solo los campos que necesito
     attack_SOCABAYA <- attack_SOCABAYA[,c("UNICODE", "I_TRIAT", "P_TRIAT", "FECHA", "CICLO")]
-        
-    #Juntando las casas adicionadas con el total de viviendas
+     
+    #--SOLO CONSOLIDADO--
+    #Extrayendo solo datos de  CHARACATO del consolidado
+    attack_UCHUMAYO <- attack_db_1[(1==attack_db_1$P & 23==attack_db_1$D),]
+    #Seleccionando solo los campos que necesito
+    attack_UCHUMAYO <- attack_UCHUMAYO[,c("UNICODE", "I_TRIAT", "P_TRIAT", "FECHA", "CICLO")]   
+  
+    
+  #Juntando las casas adicionadas con el total de viviendas
   casas_aqp_total <- rbind(casas_aqp, casas_aqp_adicionadas_I,casas_aqp_adicionadas_II)
 
 #Verificar si hay duplicados
@@ -162,6 +169,8 @@
   nc_polygon <- nc_SACHACA
   nc_polygon <- nc_TIABAYA
   nc_polygon <- nc_SOCABAYA
+  nc_polygon <- nc_UCHUMAYO
+  
   old_casa_aqp <- casas_aqp_total
   
 #Convirtiendo de factor a character o numero a caracter
