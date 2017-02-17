@@ -3,39 +3,67 @@
 #- Tener columnas: UNICODE, V
 
 #-RUTAS UTILIZADAS
-  ruta_1 <- '~/claudia codigos r'
+  ruta_1 <- '~/CLAUDIA-DATOS-/claudia codigos r'
 
 #Ruta
   setwd(ruta_1)
 
+library(data.table)  
+  
 #Leer los archivos
-  attack_2006_2009 <- read.csv("~/claudia codigos r/attack_gps2006_2009.csv")
+  attack_2006_2015 <- read.csv("~/CLAUDIA-DATOS-/claudia codigos r/ATTACK_2006_2015/attack_2006_2015.csv")
   gps_aqp<-read.csv("~/claudia codigos r/AREQUIPA_GPS_GOOGLE.csv")
+  añadidas_2006_2015<-read.csv("~/CLAUDIA-DATOS-/claudia codigos r/added_aqp_2006_2015.csv")
+
+aqp_completo<-rbind(gps_aqp,añadidas_2006_2015)
+  
+#haciendo el merge para ver cuantas caasas regulares no tienen gps despues de haber 
+#unido todos los gps con las adicionales .
+aux<-merge(attack_2006_2015,aqp_completo,by = "UNICODE",all.x = TRUE)
+length(which(is.na(aux$LATITUDE)))
+
+write.csv(aux,"casasregullressingps.csv",row.names = FALSE)
+
+rociado_gps<-merge(attack_2006_2015,gps_aqp,by = "UNICODE",all.x = TRUE)
+rociado_gps<-as.data.table(rociado_gps)
+rociado_gps$LATITUDE<-as.character(rociado_gps$LATITUD)
+
+
+
+write.csv(rociado_gps,"casas_rociado_gps.csv",row.names =FALSE)
 
 #escogiendo variablesque nos interesan y cambiando los nombres a las otras columnas  
+length(which(is.na(rociado_gps$LATITUDE)))     #5865 observations with no coordinates
+casas_singps<- (which(is.na(rociado_gps$LATITUDE)))
+casas_singps<-as.data.frame(casas_singps)
+missing.gps <- missing.gps[which(is.na(rociado_gps$LATITUDE))]   
+ missing.gps<-as.data.frame(missing.gps)
   
-  varstokeep <- c("UNICODE", "P.x","D.x","L.x","V.x","FECHA", "CICLO","LATITUDE","LONGITUDE")
-  attack_2006_2009 <- attack_2006_2009[, varstokeep]
- 
+
+varstokeep <- c("UNICODE", "P.y","D.y","L.y","V.y","FECHA", "CICLO","TRATADA","RENUENTE","CERRADA","DESHABITADA","LOCAL_PUBLICO","LOTE_VACIO","LATITUDE","LONGITUDE")
+rociado_gps <- rociado_gps[,varstokeep]
+rociado_gps<-as.data.table(rociado_gps) 
   #changed columns names 
-  setnames(attack_2006_2009,"P.x","P")
-  setnames(attack_2006_2009,"D.x","D")
-  setnames(attack_2006_2009,"L.x","L")
-  setnames(attack_2006_2009,"V.x","V") 
+  setnames(rociado_gps,"P.y","P")
+  setnames(rociado_gps,"D.y","D")
+  setnames(rociado_gps,"L.y","L")
+  setnames(rociado_gps,"V.y","V") 
 
            
   #Convertir a character
-  attack_2006_2009$UNICODE <- as.character(attack_2006_2009$UNICODE)
-  attack_2006_2009$L <- as.character(attack_2006_2009$L)
-  attack_2006_2009$V <- as.character(attack_2006_2009$V)
+  rociado_gps$UNICODE <- as.character(rociado_gps$UNICODE)
+  rociado_gps$L <- as.character(rociado_gps$L)
+  rociado_gps$V <- as.character(rociado_gps$V)
   gps_aqp$UNICODE <- as.character(gps_aqp$UNICODE)
   gps_aqp$L <- as.character(gps_aqp$L)
   gps_aqp$V <- as.character(gps_aqp$V)
 
 #Seleccionar solo los datos unicos
-  attack_2006_2009_unicos <- attack_2006_2009[which(!duplicated(attack_2006_2009$UNICODE)),]
-  data <- attack_2006_2009_unicos
+  rociado_gps_unicos <- rociado_gps[which(!duplicated(rociado_gps$UNICODE)),]
+  data <- rociado_gps_unicos
   
+#Selecionando solo columnas que nos importan
+  data <- data[,c("UNICODE","P","D","L","V","LATITUDE","LONGITUDE")]  
 #Agregamos una columna para almacenar la letra de las adicionales
   data$ADDED <- NA
   
@@ -44,7 +72,7 @@
 
   for (i in 1:n_row) {
     #Solo los que no tienen dato
-    if (is.na(data$LATITUDE[i])) {
+    if (is.na(data$V[i])) {
       #Separando UNICODE
       split_unicode <- unlist(strsplit(data$UNICODE[i], ".", fixed = TRUE))
       
@@ -96,11 +124,14 @@
   }
 #Eliminando la columna ADDED
   data_added<- data_added[,-2]
-  
+ 
+  data_unicos <- data_added[which(!duplicated(data_added$UNICODE)),]
+  data <- data_unicos 
+   
 #--------------------------------------------------------------------  
 #Imprimiendo Resultados
 #--------------------------------------------------------------------
   
   #Resultado de las viviendas adicionadas
-  write.csv(data_added,"added_aqpII.csv",row.names = FALSE)
+  write.csv(data_added,"added_aqp_2006_2015.csv",row.names = FALSE)
   

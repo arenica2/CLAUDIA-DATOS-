@@ -9,86 +9,109 @@
   install.packages("sp")
   library(spatialEco)
   library(sp)
+  
+  library(dplyr)
+  
+  
+  library(data.table)
+
 #-RUTAS UTILIZADAS
-  ruta_1 <- '~/claudia codigos r/'
+  
+  ruta_1 <- '~/CLAUDIA-DATOS-/claudia codigos r/'
 
 #Ruta
+  
+  
   
   setwd(ruta_1)
   
 #Leer los archivos
-  #Base de datos del consolidado  de  phase attack 2009-2015(DISTRITOS:CAYMA,CERRO COLORADO,ASA,CHARACATO
-  #MARIANO MELGAR,MIRAFLORES,MOLLEBAYA,PAUCARPATA(2) Y YARABAMBA)
-  attack_db_2 <- read.csv("~/claudia codigos r/attack_gps_2009_2015.csv")
-# Base de Ataque de union rociado antes del 2009(DISTRITOS:HUNTER,JLB Y R ,LA JOYA ,PAUCARPATA(1),SACHACA
-  #UCHUMAYO,TIABAYA,SOCABAYA)  
   
-  attack_db_1 <- read.csv("~/claudia codigos r/attack_gps_2006_2009.csv")
-  
+  #Base de datos CONSOLIDADO GENERAL TODOS LOS DISTRITOS 2006-2015
+
+  attack<-read.csv("~/CLAUDIA-DATOS-/claudia codigos r/ATTACK_2006_2015/ATTACK_2006_2015.csv")
   #LEYENDO LOS ARCHIVOS QUE CONTIENES LOS GP/S DE CASAS NORMALES Y ADICIONADAS .
+  
   casas_aqp<-read.csv("~/claudia codigos r/AREQUIPA_GPS_GOOGLE.csv")
-  casas_aqp_adicionadas_I <- read.csv("~/claudia codigos r/added_aqpI.csv")
-  casas_aqp_adicionadas_II<- read.csv("~/claudia codigos r/added_aqpII.csv")
+  casas_aqp_adicionadas <- read.csv("~/CLAUDIA-DATOS-/claudia codigos r/added_aqp_2006_2015.csv")
+ #diferencia<-setdiff(casas_aqp$UNICODE,casas_aqp_adicionadas$UNICODE)
   
-  
+ puntoscorregidos<-read.csv("~/CLAUDIA-DATOS-/claudia codigos r/puntos_corregidos/HUNTER_POINTS.csv")
+  puntoscorregidos<-read.csv("~/CLAUDIA-DATOS-/claudia codigos r/puntos_corregidos/JLB_POINTS.csv")
+ puntoscorregidos<-read.csv("~/CLAUDIA-DATOS-/claudia codigos r/puntos_corregidos/LAJOYA_POINTS.csv")
+ puntoscorregidos<-read.csv("~/CLAUDIA-DATOS-/claudia codigos r/puntos_corregidos/PAUCARPATA_POINTS.csv")
+ puntoscorregidos<-read.csv("~/CLAUDIA-DATOS-/claudia codigos r/puntos_corregidos/SACHACA_POINTS.csv")
+ puntoscorregidos<-read.csv("~/CLAUDIA-DATOS-/claudia codigos r/puntos_corregidos/UCHUMAYO_POINTS.csv")
+  puntoscorregidos<-read.csv("~/CLAUDIA-DATOS-/claudia codigos r/puntos_corregidos/TIABAYA_POINTS.csv")
+  puntoscorregidos<-read.csv("~/CLAUDIA-DATOS-/claudia codigos r/puntos_corregidos/SOCABAYA_POINTS.csv")
+  puntoscorregidos<-read.csv("~/CLAUDIA-DATOS-/claudia codigos r/puntos_corregidos/ASA_POINTS.csv")
+  puntoscorregidos<-read.csv("~/CLAUDIA-DATOS-/claudia codigos r/puntos_corregidos/CAYMA_POINTS.csv")
+  puntoscorregidos<-read.csv("~/CLAUDIA-DATOS-/claudia codigos r/puntos_corregidos/MIRAFLORES_POINTS.csv")
+  puntoscorregidos<-read.csv("~/CLAUDIA-DATOS-/claudia codigos r/puntos_corregidos/CHARACATO_POINTS.csv")
+  puntoscorregidos<-read.csv("~/CLAUDIA-DATOS-/claudia codigos r/puntos_corregidos/YARABAMBA_POINTS.csv")
+
   #OBTENIENDO LAS BASES DE MANZANA  HUNTER ,JLB Y RIVERO ,LA JOYA ,SACHACA,UCHUMAYO,TIABAYA Y SOCABAYA 
   
-  nc_HUNTER<-read.csv("~/claudia codigos r//Manzanas _Arequipa/Jacobo Hunter/Jacobo Hunter MZ.csv")
+  nc_HUNTER<-read.csv("~/CLAUDIA-DATOS-/Hunter_Mz_06FEB2017.csv")
+  nc_HUNTER[nc_HUNTER==" "]<-"NA"
+  
   nc_JLB_RIVERO<-read.csv("~/CLAUDIA-DATOS-/JLByRivero_Mz_corregido.csv",sep = ",")
-  nc_LAJOYA<-read.csv("~/claudia codigos r/Manzanas _Arequipa/La Joya/La Joya MZ.csv")
-  nc_SACHACA<-read.csv("~/claudia codigos r/Manzanas _Arequipa/Sachaca/Sachaca_mz.csv",sep = ";")
-  nc_UCHUMAYO<-read.csv("~/claudia codigos r/Manzanas _Arequipa/Uchumayo/Uchumayo.csv",sep = ";")
-  nc_TIABAYA<-read.csv("~/claudia codigos r/Manzanas _Arequipa/Tiabaya/Tiabaya.csv",sep = ";")
-  nc_SOCABAYA<-read.csv("~/claudia codigos r/Manzanas _Arequipa/Socabaya/socabaya_mz.csv",sep = ";")
+  nc_LAJOYA<-read.csv("~/CLAUDIA-DATOS-/La_Joya_Mz_corregido.csv")
+  nc_SACHACA<-read.csv("~/CLAUDIA-DATOS-/Sachaca_Mz_02FEB2017.csv")
+  nc_SACHACA[nc_SACHACA== "NA"]<-NA
+  nc_UCHUMAYO<-read.csv("~/CLAUDIA-DATOS-/Uchumayo_Mz_07FEB2017.csv",sep = ",")
+  
+  nc_TIABAYA<-read.csv("~/CLAUDIA-DATOS-/Tiabaya_Mz_corregido.csv")
+  nc_SOCABAYA<-read.csv("~/CLAUDIA-DATOS-/Socabaya_Mz_corregido.csv")
   
   #OBTENIENDO LAS BASES DE  MANZANA ASA ,CAYMA ,CERRO COLORADO,CHARACATO ,MARIANO MELGAR,MIRAFLORES,MOLLEBAYA
   #PAUCARPATA(2)Y YARABAMBA. 
-  nc_melgar<-read.csv("unicode_numberMzn/Manzanas _Arequipa/Mariano Melgar/MARIANO MELGAR.csv")
-  nc_CAYMA <-read.csv("~/claudia codigos r/Manzanas _Arequipa/Cayma/Cayma_Mz.csv", sep = ",")
-  nc_ASA <-read.csv("~/claudia codigos r/Manzanas _Arequipa/ASA/Alto Selva Alegre_Mz.csv", sep = ";")
-  nc_YARABAMBA<-read.csv ("~/claudia codigos r/Manzanas _Arequipa/Yarabamba/Yarabamba.csv",sep = ";")
-  nc_MIRAFLORES <-read.csv ("~/claudia codigos r/Manzanas_Arequipa/Miraflores/Miraflores_mz.csv",  sep = ";")
+  nc_melgar<-read.csv("~/CLAUDIA-DATOS-/claudia codigos r/Manzanas _Arequipa/Mariano Melgar/MARIANO MELGAR.csv")
+  nc_CAYMA <-read.csv("~/CLAUDIA-DATOS-/Cayma_mz_corregido.csv", sep = ",")
+  nc_ASA <-read.csv("~/CLAUDIA-DATOS-/ASA_Mz_corregido.csv", sep = ",")
+  nc_YARABAMBA<-read.csv ("~/CLAUDIA-DATOS-/Yarabamba_Mz_corregido.csv")
+  nc_MIRAFLORES <-read.csv ("~/CLAUDIA-DATOS-/Miraflores_mz_corregido.csv")
   #nc_CERRO_COLORADO <-read.csv("~/claudia codigos r/Manzanas _Arequipa/Cerro Colorado/Cerro Colorado MZ.csv", sep = ";")
-  nc_CHARACATO <-read.csv("~/claudia codigos r/Manzanas _Arequipa/Characato/Characato MZ.csv", sep = ";")
-  nc_PAUCARPATA<-read.csv("~/claudia codigos r/Manzanas _Arequipa/Paucarpata/Paucarpata.csv")
+  nc_CHARACATO <-read.csv("~/CLAUDIA-DATOS-/Characato_Mz_03FEB2017.csv")
+  nc_PAUCARPATA<-read.csv("~/CLAUDIA-DATOS-/Paucarpata_Mz_07FEB2017.csv")
  
  #---------------------------------------------------------------------------------- 
   
    #--SOLO CONSOLIDADO--
   #Extrayendo solo datos de MARIANO MELGAR del consolidado
-    #attack_mm <- attack_db[(1==attack_db$P & 10==attack_db$D),]
+  attack_mm <- attack[(1==attack$P & 10==attack$D),]
   #Seleccionando solo los campos que necesito
-    #attack_mm <- attack_mm[,c("UNICODE", "I_TRIAT", "P_TRIAT", "FECHA", "CICLO")]
+  attack_mm <- attack_mm[,c("UNICODE", "I_TRIAT", "P_TRIAT", "FECHA", "CICLO","TRATADA","RENUENTE","CERRADA","DESHABITADA","LOCAL_PUBLICO","LOTE_VACIO")]
 #--------------------------
     #--SOLO CONSOLIDADO--
     #Extrayendo solo datos de HUNTER del consolidado
-    attack_HUNTER <- attack_db_1[(1==attack_db_1$P & 7==attack_db_1$D),]
+    attack_HUNTER <- attack[(1==attack$P & 7==attack$D),]
     #Seleccionando solo los campos que necesito
-    attack_HUNTER <- attack_HUNTER[,c("UNICODE", "I_TRIAT", "P_TRIAT", "FECHA", "CICLO")]
+    attack_HUNTER <- attack_HUNTER[,c("UNICODE", "I_TRIAT", "P_TRIAT", "FECHA", "CICLO","TRATADA","RENUENTE","CERRADA","DESHABITADA","LOCAL_PUBLICO","LOTE_VACIO")]
     #-------------------------- 
     #--SOLO CONSOLIDADO--
     #Extrayendo solo datos de MARIANO MELGAR del consolidado
-    attack_JLB_RIVERO <- attack_db_1[(1==attack_db_1$P & 8==attack_db_1$D),]
+    attack_JLB_RIVERO <- attack[(1==attack$P & 8==attack$D),]
     #Seleccionando solo los campos que necesito
-    attack_JLB_RIVERO <- attack_JLB_RIVERO[,c("UNICODE", "I_TRIAT", "P_TRIAT", "FECHA", "CICLO")]
+    attack_JLB_RIVERO <- attack_JLB_RIVERO[,c("UNICODE", "I_TRIAT", "P_TRIAT", "FECHA", "CICLO","TRATADA","RENUENTE","CERRADA","DESHABITADA","LOCAL_PUBLICO","LOTE_VACIO")]
     #-------------------------- 
     #--SOLO CONSOLIDADO--
     #Extrayendo solo datos de Yarabamba del consolidado
-    attack_Yarabamba <- attack_db_2[(1==attack_db_2$P & 28==attack_db_2$D),]
+    attack_Yarabamba <- attack[(1==attack$P & 28==attack$D),]
     #Seleccionando solo los campos que necesito
-    attack_Yarabamba <- attack_Yarabamba[,c("UNICODE", "I_TRIAT", "P_TRIAT", "FECHA", "CICLO")]
+    attack_Yarabamba <- attack_Yarabamba[,c("UNICODE", "I_TRIAT", "P_TRIAT", "FECHA", "CICLO","TRATADA","RENUENTE","CERRADA","DESHABITADA","LOCAL_PUBLICO","LOTE_VACIO")]
     #-------------------------- 
         #--SOLO CONSOLIDADO--
     #Extrayendo solo datos de MARIANO MELGAR del consolidado
-    attack_ASA<- attack_db_2[(1==attack_db_2$P & 1==attack_db_2$D),]
+    attack_ASA<- attack[(1==attack$P & 1==attack$D),]
     #Seleccionando solo los campos que necesito
-    attack_ASA <- attack_ASA[,c("UNICODE", "I_TRIAT", "P_TRIAT", "FECHA", "CICLO")]
+    attack_ASA <- attack_ASA[,c("UNICODE", "I_TRIAT", "P_TRIAT", "FECHA", "CICLO","TRATADA","RENUENTE","CERRADA","DESHABITADA","LOCAL_PUBLICO","LOTE_VACIO")]
     #--------------------------
     #--SOLO CONSOLIDADO--
     #Extrayendo solo datos de PAUCARPATA del consolidado
-    attack_p_1 <- attack_db_1[(1==attack_db_1$P & 13==attack_db_1$D),]
-    #Extrayendo solo datos de PAUCARPATA del consolidado
-    attack_p_2 <- attack_db_2[(1==attack_db_2$P & 13==attack_db_2$D),]
+    attack_PAUCARPATA <- attack[(1==attack$P & 13==attack$D),]
+    #Extrayendo solo los datos que necesito 
+    attack_PAUCARPATA <- attack_PAUCARPATA[,c("UNICODE", "I_TRIAT", "P_TRIAT", "FECHA", "CICLO","TRATADA","RENUENTE","CERRADA","DESHABITADA","LOCAL_PUBLICO","LOTE_VACIO")]
  
    #UNIENDO LA BASE DE PAUCARPATA DE AMBOS ROCIADOS 
     attack_PAUCARPATA<-rbind(attack_p_1,attack_p_2)  
@@ -99,65 +122,87 @@
     #Extrayendo solo datos de YARABAMABA del consolidado
     attack_yarabamba <- attack_db[(1==attack_db$P & 28==attack_db$D),]
     #Seleccionando solo los campos que necesito
-    attack_yarabamba <- attack_yarabamba[,c("UNICODE", "I_TRIAT", "P_TRIAT", "FECHA", "CICLO")]
+    attack_yarabamba <- attack_yarabamba[,c("UNICODE", "I_TRIAT", "P_TRIAT", "FECHA", "CICLO","TRATADA","RENUENTE","CERRADA","DESHABITADA","LOCAL_PUBLICO","LOTE_VACIO")]
     #-------------------------- 
     #--SOLO CONSOLIDADO--
     #Extrayendo solo datos de  LA JOYA  del consolidado
-    attack_LA_JOYA <- attack_db_1[(1==attack_db_1$P & 9==attack_db_1$D),]
+    attack_LA_JOYA <- attack[(1==attack$P & 9==attack$D),]
     #Seleccionando solo los campos que necesito
-    attack_LA_JOYA <- attack_LA_JOYA[,c("UNICODE", "I_TRIAT", "P_TRIAT", "FECHA", "CICLO")]
+    attack_LA_JOYA <- attack_LA_JOYA[,c("UNICODE", "I_TRIAT", "P_TRIAT", "FECHA", "CICLO","TRATADA","RENUENTE","CERRADA","DESHABITADA","LOCAL_PUBLICO","LOTE_VACIO")]
     #-------------------------- 
     #--SOLO CONSOLIDADO--
     #Extrayendo solo datos de CAYMA del consolidado
-    attack_cayma  <- attack_db_2[(1==attack_db_2$P & 3==attack_db_2$D),]
+    attack_cayma  <- attack[(1==attack$P & 3==attack$D),]
     #Seleccionando solo los campos que necesito
-    attack_cayma <- attack_cayma[,c("UNICODE", "I_TRIAT", "P_TRIAT", "FECHA", "CICLO")]
+    attack_cayma <- attack_cayma[,c("UNICODE", "I_TRIAT", "P_TRIAT", "FECHA", "CICLO","TRATADA","RENUENTE","CERRADA","DESHABITADA","LOCAL_PUBLICO","LOTE_VACIO")]
    
     #--SOLO CONSOLIDADO--
-    #Extrayendo solo datos de  CHARACATO del consolidado
-    attack_CHARACATO  <- attack_db_2[(1==attack_db_2$P & 5==attack_db_2$D),]
+    #Extrayendo solo datos de CAYMA del consolidado
+    attack_MIRAFLORES  <- attack[(1==attack$P & 11==attack$D),]
     #Seleccionando solo los campos que necesito
-    attack_CHARACATO <- attack_CHARACATO[,c("UNICODE", "I_TRIAT", "P_TRIAT", "FECHA", "CICLO")]
+    attack_MIRAFLORES <- attack_MIRAFLORES[,c("UNICODE", "I_TRIAT", "P_TRIAT", "FECHA", "CICLO","TRATADA","RENUENTE","CERRADA","DESHABITADA","LOCAL_PUBLICO","LOTE_VACIO")]
+    
+    
+    
+    #--SOLO CONSOLIDADO--
+    #Extrayendo solo datos de  CHARACATO del consolidado
+    attack_CHARACATO  <- attack[(1==attack$P & 5==attack$D),]
+    #Seleccionando solo los campos que necesito
+    attack_CHARACATO <- attack_CHARACATO[,c("UNICODE", "I_TRIAT", "P_TRIAT", "FECHA", "CICLO","TRATADA","RENUENTE","CERRADA","DESHABITADA","LOCAL_PUBLICO","LOTE_VACIO")]
  
     #--SOLO CONSOLIDADO--
     #Extrayendo solo datos de  CHARACATO del consolidado
-    attack_SACHACA  <- attack_db_1[(1==attack_db_1$P & 18==attack_db_1$D),]
+    attack_SACHACA  <- attack[(1==attack$P & 18==attack$D),]
     #Seleccionando solo los campos que necesito
-    attack_SACHACA <- attack_SACHACA[,c("UNICODE", "I_TRIAT", "P_TRIAT", "FECHA", "CICLO")]
+    attack_SACHACA <- attack_SACHACA[,c("UNICODE", "I_TRIAT", "P_TRIAT", "FECHA", "CICLO","TRATADA","RENUENTE","CERRADA","DESHABITADA","LOCAL_PUBLICO","LOTE_VACIO")]
     
     #--SOLO CONSOLIDADO--
     #Extrayendo solo datos de  CHARACATO del consolidado
-    attack_TIABAYA  <- attack_db_1[(1==attack_db_1$P & 24==attack_db_1$D),]
+    attack_TIABAYA  <- attack[(1==attack$P & 24==attack$D),]
     #Seleccionando solo los campos que necesito
-    attack_TIABAYA <- attack_TIABAYA[,c("UNICODE", "I_TRIAT", "P_TRIAT", "FECHA", "CICLO")]
+    attack_TIABAYA <- attack_TIABAYA[,c("UNICODE", "I_TRIAT", "P_TRIAT", "FECHA", "CICLO","TRATADA","RENUENTE","CERRADA","DESHABITADA","LOCAL_PUBLICO","LOTE_VACIO")]
     
     #--SOLO CONSOLIDADO--
     #Extrayendo solo datos de  CHARACATO del consolidado
-    attack_SOCABAYA  <- attack_db_1[(1==attack_db_1$P & 25==attack_db_1$D),]
+    attack_SOCABAYA  <- attack[(1==attack$P & 25==attack$D),]
     #Seleccionando solo los campos que necesito
-    attack_SOCABAYA <- attack_SOCABAYA[,c("UNICODE", "I_TRIAT", "P_TRIAT", "FECHA", "CICLO")]
+    attack_SOCABAYA <- attack_SOCABAYA[,c("UNICODE", "I_TRIAT", "P_TRIAT", "FECHA", "CICLO","TRATADA","RENUENTE","CERRADA","DESHABITADA","LOCAL_PUBLICO","LOTE_VACIO")]
      
     #--SOLO CONSOLIDADO--
     #Extrayendo solo datos de  CHARACATO del consolidado
-    attack_UCHUMAYO <- attack_db_1[(1==attack_db_1$P & 23==attack_db_1$D),]
+    attack_UCHUMAYO <- attack[(1==attack$P & 23==attack$D),]
     #Seleccionando solo los campos que necesito
-    attack_UCHUMAYO <- attack_UCHUMAYO[,c("UNICODE", "I_TRIAT", "P_TRIAT", "FECHA", "CICLO")]   
+    attack_UCHUMAYO <- attack_UCHUMAYO[,c("UNICODE", "I_TRIAT", "P_TRIAT", "FECHA", "CICLO","TRATADA","RENUENTE","CERRADA","DESHABITADA","LOCAL_PUBLICO","LOTE_VACIO")]   
   
     
   #Juntando las casas adicionadas con el total de viviendas
-  casas_aqp_total <- rbind(casas_aqp, casas_aqp_adicionadas_I,casas_aqp_adicionadas_II)
-
+  casas_aqp_total <-rbind(puntoscorregidos,casas_aqp_adicionadas)
+  casas_aqp_total<-rbind(casas_aqp,casas_aqp_adicionadas)
 #Verificar si hay duplicados
+
   indice_dupli <- casas_aqp[which(duplicated(casas_aqp$UNICODE)),1]
+  
   duplicados<-casas_aqp[casas_aqp$UNICODE %in% indice_dupli,]
   duplicados <- duplicados[order(duplicados$UNICODE),]
   
+  
   indice_dupli <- casas_aqp_total[which(duplicated(casas_aqp_total$UNICODE)),1]
+  
   duplicados<-casas_aqp_total[casas_aqp_total$UNICODE %in% indice_dupli,]
   duplicados <- duplicados[order(duplicados$UNICODE),]
 
-#Bases utilizadas en el proceso
-  #nc_polygon <- nc_melgar
+  #Eliminando duplicados
+
+  #AUX<-casas_aqp_total[duplicated(casas_aqp_total$UNICODE), ]
+  casas_aqp_total<-casas_aqp_total[!duplicated(casas_aqp_total$UNICODE), ]
+ # casas_aqp_total<-distinct(casas_aqp_total)
+  
+  #casas_aqp_total[duplicated(casas_aqp_total)]
+  
+  #casas_aqp_total[!duplicated(casas_aqp_total)]
+
+  #Bases utilizadas en el proceso
+  nc_polygon <- nc_melgar
   nc_polygon <- nc_HUNTER
   nc_polygon <- nc_JLB_RIVERO
   nc_polygon <- nc_LAJOYA
@@ -170,17 +215,22 @@
   nc_polygon <- nc_TIABAYA
   nc_polygon <- nc_SOCABAYA
   nc_polygon <- nc_UCHUMAYO
+  nc_polygon <- nc_MIRAFLORES
+  
+  
   
   old_casa_aqp <- casas_aqp_total
-  
+  old_casa_aqp <-puntoscorregidos
 #Convirtiendo de factor a character o numero a caracter
   nc_polygon$ident <- as.character(nc_polygon$ident)
   nc_polygon$long <- as.character(nc_polygon$long)
   nc_polygon$lat <- as.character(nc_polygon$lat)
-  casas_aqp$D <- as.character(casas_aqp$D)
-  casas_aqp$L <- as.character(casas_aqp$L)
+  old_casa_aqp$D <- as.character(old_casa_aqp$D)
+  
+  old_casa_aqp$L <- as.character(old_casa_aqp$L)
 
 #Creando columna para el numero de localidad y de cuadra
+  
   nc_polygon$num_distrito <- NA
   nc_polygon$num_localidad <- NA
   nc_polygon$num_cuadra <- NA
@@ -193,7 +243,7 @@
   aqp_gps_block <- data.frame()
   aux <- data.frame()
   no_block <- data.frame()#Alamcenaremos los que no tienen cuadra
-  inicio <-1#si tiene 1 es por que es un primer elemento 
+  inicio <-1 #si tiene 1 es por que es un primer elemento 
   
   aux_null <- 0 #Si es 0 significa que si existen datos en la variable "aux"
   
@@ -288,204 +338,295 @@
   
 #--------JUNTANDO CONSOLIDADO CON CUADRAS -----
   #Diferencia C-S v S-C
-    diff1<-setdiff(attack_mm$UNICODE,aqp_gps_block$UNICODE) # 10 viviendas
-    diff2<-setdiff(aqp_gps_block$UNICODE,attack_mm$UNICODE) # 5055
+    diff1<-setdiff(attack_mm$UNICODE,aqp_gps_block$UNICODE) # 28 viviendas
+    diff2<-setdiff(aqp_gps_block$UNICODE,attack_mm$UNICODE) # 3172
   #Interseccion
-    interseption<-intersect(attack_mm$UNICODE, aqp_gps_block$UNICODE)
+    interseption<-intersect(attack_mm$UNICODE, aqp_gps_block$UNICODE)#9703
     
   #Merge
     mmelgar_gps_rociado <- merge(aqp_gps_block,attack_mm, all= TRUE, by = "UNICODE")
   #Comprobando
-    aux1 <- attack_mm[attack_mm$UNICODE%in%diff1,]
+    aux1 <- attack_mm[attack_mm$UNICODE%in%diff1,]#35
     aux2 <- mmelgar_gps_rociado[mmelgar_gps_rociado$UNICODE%in%diff1,]
-    aux3 <- mmelgar_gps_rociado[mmelgar_gps_rociado$UNICODE%in%diff2,]
-   
+    aux3 <- mmelgar_gps_rociado[mmelgar_gps_rociado$UNICODE%in%diff2,]#3172
+    
+    write.csv(aux1,"~/CLAUDIA-DATOS-/claudia codigos r/dif_roci_aqp/mmelgar_dif_sir_nogoo.csv",row.names = FALSE)
     
          #--------JUNTANDO CONSOLIDADO CON CUADRAS -----
     #Diferencia C-S v S-C
-    diff1<-setdiff(attack_HUNTER$UNICODE,aqp_gps_block$UNICODE) # 318 viviendas
-    diff2<-setdiff(aqp_gps_block$UNICODE,attack_HUNTER$UNICODE) # 544
+    diff1<-setdiff(attack_HUNTER$UNICODE,aqp_gps_block$UNICODE) # 136 viviendas las que etsan en el ataque pero no tenemos puntos 
+    diff2<-setdiff(aqp_gps_block$UNICODE,attack_HUNTER$UNICODE) # 609 viviendas que hay aqp_block
     #Interseccion
-    interseption<-intersect(attack_HUNTER$UNICODE, aqp_gps_block$UNICODE)#10183
+    interseption<-intersect(attack_HUNTER$UNICODE, aqp_gps_block$UNICODE)#10365
         #Merge
     HUNTER_gps_rociado <- merge(aqp_gps_block,attack_HUNTER, all= TRUE, by = "UNICODE")
     #Comprobando
-    aux1 <- attack_HUNTER[attack_HUNTER$UNICODE%in%diff1,]#484 VIVIENDAS 
+    aux1 <- attack_HUNTER[attack_HUNTER$UNICODE%in%diff1,]#147 VIVIENDAS 
     aux2 <- HUNTER_gps_rociado[HUNTER_gps_rociado$UNICODE%in%diff1,]
-    aux3 <- HUNTER_gps_rociado[HUNTER_gps_rociado$UNICODE%in%diff2,]#544
+    aux3 <- HUNTER_gps_rociado[HUNTER_gps_rociado$UNICODE%in%diff2,]#609
+  
+    idff<-setdiff(attack_HUNTER$UNICODE,casas_aqp_total$UNICODE)
+    baux<-attack_HUNTER[attack_HUNTER$UNICODE%in%idff,]#130
     
+    write.csv(aux1,"~/CLAUDIA-DATOS-/claudia codigos r/dif_roci_aqp/hunter_dif_sir_nogoo.csv",row.names = FALSE)
+    
+    
+    #-------------------------------------------------------------------------------  
     #Diferencia C-S v S-C
-    diff1<-setdiff(attack_JLB_RIVERO$UNICODE,aqp_gps_block$UNICODE) # 20 viviendas
-    diff2<-setdiff(aqp_gps_block$UNICODE,attack_JLB_RIVERO$UNICODE) # 5055
+    diff1<-setdiff(attack_JLB_RIVERO$UNICODE,aqp_gps_block$UNICODE) # 1 viviendas
+    diff2<-setdiff(aqp_gps_block$UNICODE,attack_JLB_RIVERO$UNICODE) # 3090
     #Interseccion
-    interseption<-intersect(attack_JLB_RIVERO$UNICODE, aqp_gps_block$UNICODE)
+    interseption<-intersect(attack_JLB_RIVERO$UNICODE, aqp_gps_block$UNICODE)#5168
     
     #Merge
     JLB_RIVERO_gps_rociado <- merge(aqp_gps_block,attack_JLB_RIVERO, all= TRUE, by = "UNICODE")
     #Comprobando
-    aux1 <- attack_JLB_RIVERO[attack_JLB_RIVERO$UNICODE%in%diff1,]
+    aux1 <- attack_JLB_RIVERO[attack_JLB_RIVERO$UNICODE%in%diff1,]#2
     aux2 <- JLB_RIVERO_gps_rociado[JLB_RIVERO_gps_rociado$UNICODE%in%diff1,]
-    aux3 <- JLB_RIVERO_gps_rociado[JLB_RIVERO_gps_rociado$UNICODE%in%diff2,]
+    aux3 <- JLB_RIVERO_gps_rociado[JLB_RIVERO_gps_rociado$UNICODE%in%diff2,]#3091
+    
+    write.csv(aux1,"~/CLAUDIA-DATOS-/claudia codigos r/dif_roci_aqp/jbrivero_dif_sir_nogoo.csv",row.names = FALSE)
     
     #_______________________________
     
 #---------------------------------------------
     #Diferencia C-S v S-C
-    diff1<-setdiff(attack_LA_JOYA$UNICODE,aqp_gps_block$UNICODE) #  viviendas
-    diff2<-setdiff(aqp_gps_block$UNICODE,attack_LA_JOYA$UNICODE) # 5055
+    diff1<-setdiff(attack_LA_JOYA$UNICODE,aqp_gps_block$UNICODE) #  933viviendas
+    diff2<-setdiff(aqp_gps_block$UNICODE,attack_LA_JOYA$UNICODE) # 344
     #Interseccion
-    interseption<-intersect(attack_LA_JOYA$UNICODE, aqp_gps_block$UNICODE)
+    interseption<-intersect(attack_LA_JOYA$UNICODE, aqp_gps_block$UNICODE)#4676
     
     #Merge
     LA_JOYA_gps_rociado <- merge(aqp_gps_block,attack_LA_JOYA, all= TRUE, by = "UNICODE")
     #Comprobando
-    aux1 <- attack_LA_JOYA[attack_LA_JOYA$UNICODE%in%diff1,]
+    aux1 <- attack_LA_JOYA[attack_LA_JOYA$UNICODE%in%diff1,]#1395
     aux2 <- LA_JOYA_gps_rociado[LA_JOYA_gps_rociado$UNICODE%in%diff1,]
-    aux3 <- LA_JOYA_gps_rociado[LA_JOYA_gps_rociado$UNICODE%in%diff2,]
-#_____________________________________
+    aux3 <- LA_JOYA_gps_rociado[LA_JOYA_gps_rociado$UNICODE%in%diff2,]#344
+
+    write.csv(aux1,"~/CLAUDIA-DATOS-/claudia codigos r/dif_roci_aqp/lajoya_dif_sir_nogoo.csv",row.names = FALSE)
+    
+    
+    #_____________________________________
     
     #uniendo bases 
-    diff1<-setdiff(attack_cayma$UNICODE,aqp_gps_block$UNICODE) #  72viviendas
-    diff2<-setdiff(aqp_gps_block$UNICODE,attack_cayma$UNICODE) # 11491
+    diff1<-setdiff(attack_cayma$UNICODE,aqp_gps_block$UNICODE) #  76viviendas
+    diff2<-setdiff(aqp_gps_block$UNICODE,attack_cayma$UNICODE) # 10276
     #Interseccion
-    interseption<-intersect(attack_cayma$UNICODE, aqp_gps_block$UNICODE)#6581
+    interseption<-intersect(attack_cayma$UNICODE, aqp_gps_block$UNICODE)#7844
     
     #Merge
     CAYMA_gps_rociado <- merge(aqp_gps_block,attack_cayma, all= TRUE, by = "UNICODE")
     #Comprobando
-    aux1 <- attack_cayma[attack_cayma$UNICODE%in%diff1,]#112
+    aux1 <- attack_cayma[attack_cayma$UNICODE%in%diff1,]#137
     aux2 <- CAYMA_gps_rociado[CAYMA_gps_rociado$UNICODE%in%diff1,]
-    aux3 <- CAYMA_gps_rociado[CAYMA_gps_rociado$UNICODE%in%diff2,]#11491
+    aux3 <- CAYMA_gps_rociado[CAYMA_gps_rociado$UNICODE%in%diff2,]#10276
     
     
+    write.csv(aux1,"~/CLAUDIA-DATOS-/claudia codigos r/dif_roci_aqp/cayma_dif_sir_nogoo.csv",row.names = FALSE)
+ #-----------------------------------------------------------------------------------------   
     #uniendo bases 
-    diff1<-setdiff(attack_ASA$UNICODE,aqp_gps_block$UNICODE) #  76viviendas
-    diff2<-setdiff(aqp_gps_block$UNICODE,attack_ASA$UNICODE) # 14853
+    diff1<-setdiff(attack_ASA$UNICODE,aqp_gps_block$UNICODE) #  133viviendas
+    diff2<-setdiff(aqp_gps_block$UNICODE,attack_ASA$UNICODE) # 14335
     #Interseccion
-    interseption<-intersect(attack_ASA$UNICODE, aqp_gps_block$UNICODE)#6012
+    interseption<-intersect(attack_ASA$UNICODE, aqp_gps_block$UNICODE)#6563
     
     #Merge
     ASA_gps_rociado <- merge(aqp_gps_block,attack_ASA, all= TRUE, by = "UNICODE")
     #Comprobando
-    aux1 <- attack_ASA[attack_ASA$UNICODE%in%diff1,]#140 observaciones 
-    aux2 <- ASA_gps_rociado[ASA_gps_rociado$UNICODE%in%diff1,]
-    aux3 <- ASA_gps_rociado[ASA_gps_rociado$UNICODE%in%diff2,]#14853 
- #_--------------------------------------------------------------------
+    aux1 <- attack_ASA[attack_ASA$UNICODE%in%diff1,]#236 observaciones 
+    aux2 <- ASA_gps_rociado[ASA_gps_rociado$UNICODE%in%diff1,]#236
+    aux3 <- ASA_gps_rociado[ASA_gps_rociado$UNICODE%in%diff2,]#14335 
+ 
+    write.csv(aux1,"~/CLAUDIA-DATOS-/claudia codigos r/dif_roci_aqp/asa_dif_sir_nogoo.csv",row.names = FALSE)
+    
+    #_--------------------------------------------------------------------
     #uniendo bases 
-    diff1<-setdiff(attack_Yarabamba$UNICODE,aqp_gps_block$UNICODE) #  5viviendas
-    diff2<-setdiff(aqp_gps_block$UNICODE,attack_Yarabamba$UNICODE) # 327Viviendas 
+    diff1<-setdiff(attack_Yarabamba$UNICODE,aqp_gps_block$UNICODE) #  25viviendas
+    diff2<-setdiff(aqp_gps_block$UNICODE,attack_Yarabamba$UNICODE) # 176Viviendas 
     #Interseccion
-    interseption<-intersect(attack_Yarabamba$UNICODE, aqp_gps_block$UNICODE)#180
+    interseption<-intersect(attack_Yarabamba$UNICODE, aqp_gps_block$UNICODE)#332
     
     #Merge
     YARABAMBA_gps_rociado <- merge(aqp_gps_block,attack_Yarabamba, all= TRUE, by = "UNICODE")
     #Comprobando
-    aux1 <- attack_Yarabamba[attack_Yarabamba$UNICODE%in%diff1,]#10 observaciones 
+    aux1 <- attack_Yarabamba[attack_Yarabamba$UNICODE%in%diff1,]#39 observaciones 
     aux2 <- YARABAMBA_gps_rociado[YARABAMBA_gps_rociado$UNICODE%in%diff1,]
-    aux3 <- YARABAMBA_gps_rociado[YARABAMBA_gps_rociado$UNICODE%in%diff2,]#327  
+    aux3 <- YARABAMBA_gps_rociado[YARABAMBA_gps_rociado$UNICODE%in%diff2,]#176
+    write.csv(aux1,"~/CLAUDIA-DATOS-/claudia codigos r/dif_roci_aqp/yarabamba_dif_sir_nogoo.csv",row.names = FALSE)
  #------------------------------------------------------------------------   
     #uniendo bases 
-    diff1<-setdiff(attack_CHARACATO$UNICODE,aqp_gps_block$UNICODE) #  240viviendas
-    diff2<-setdiff(aqp_gps_block$UNICODE,attack_CHARACATO$UNICODE) # 1928Viviendas 
+    diff1<-setdiff(attack_CHARACATO$UNICODE,aqp_gps_block$UNICODE) #  580viviendas
+    diff2<-setdiff(aqp_gps_block$UNICODE,attack_CHARACATO$UNICODE) # 917Viviendas 
     #Interseccion
-    interseption<-intersect(attack_CHARACATO$UNICODE, aqp_gps_block$UNICODE)#1486
+    interseption<-intersect(attack_CHARACATO$UNICODE, aqp_gps_block$UNICODE)#2548
     
     #Merge
     CHARACATO_gps_rociado <- merge(aqp_gps_block,attack_CHARACATO, all= TRUE, by = "UNICODE")
     #Comprobando
-    aux1 <- attack_CHARACATO[attack_CHARACATO$UNICODE%in%diff1,]#345 observaciones 
+    aux1 <- attack_CHARACATO[attack_CHARACATO$UNICODE%in%diff1,]#712 observaciones 
     aux2 <- CHARACATO_gps_rociado[CHARACATO_gps_rociado$UNICODE%in%diff1,]
-    aux3 <- CHARACATO_gps_rociado[CHARACATO_gps_rociado$UNICODE%in%diff2,]#1928   
- #------------------------------------------------------------------------------------      
+    aux3 <- CHARACATO_gps_rociado[CHARACATO_gps_rociado$UNICODE%in%diff2,]#917   
+ 
+    write.csv(aux1,"~/CLAUDIA-DATOS-/claudia codigos r/dif_roci_aqp/characato_dif_sir_nogoo.csv",row.names = FALSE)
+    
+    #------------------------------------------------------------------------------------      
     #uniendo bases 
-    diff1<-setdiff(attack_SACHACA$UNICODE,aqp_gps_block$UNICODE) #  293viviendas
-    diff2<-setdiff(aqp_gps_block$UNICODE,attack_SACHACA$UNICODE) # 1526Viviendas 
+    diff1<-setdiff(attack_SACHACA$UNICODE,aqp_gps_block$UNICODE) #  172viviendas
+    diff2<-setdiff(aqp_gps_block$UNICODE,attack_SACHACA$UNICODE) # 1547Viviendas 
     #Interseccion
-    interseption<-intersect(attack_SACHACA$UNICODE, aqp_gps_block$UNICODE)#2870
+    interseption<-intersect(attack_SACHACA$UNICODE, aqp_gps_block$UNICODE)#2991
     
     #Merge
     SACHACA_gps_rociado <- merge(aqp_gps_block,attack_SACHACA, all= TRUE, by = "UNICODE")
     #Comprobando
-    aux1 <- attack_SACHACA[attack_SACHACA$UNICODE%in%diff1,]#577 observaciones 
+    aux1 <- attack_SACHACA[attack_SACHACA$UNICODE%in%diff1,]#338 observaciones 
     aux2 <- SACHACA_gps_rociado[SACHACA_gps_rociado$UNICODE%in%diff1,]
-    aux3 <- SACHACA_gps_rociado[SACHACA_gps_rociado$UNICODE%in%diff2,]#1526
+    aux3 <- SACHACA_gps_rociado[SACHACA_gps_rociado$UNICODE%in%diff2,]#1547
     
+    write.csv(aux1,"~/CLAUDIA-DATOS-/claudia codigos r/dif_roci_aqp/hunter_dif_sir_nogoo.csv",row.names = FALSE)
  #--------------------------------------------------------------------------------   
     #uniendo bases 
-    diff1<-setdiff(attack_TIABAYA$UNICODE,aqp_gps_block$UNICODE) #  246viviendas
-    diff2<-setdiff(aqp_gps_block$UNICODE,attack_TIABAYA$UNICODE) # 25Viviendas 
+    diff1<-setdiff(attack_TIABAYA$UNICODE,aqp_gps_block$UNICODE) #  113viviendas
+    diff2<-setdiff(aqp_gps_block$UNICODE,attack_TIABAYA$UNICODE) # 26Viviendas 
     #Interseccion
-    interseption<-intersect(attack_TIABAYA$UNICODE, aqp_gps_block$UNICODE)#3032
+    interseption<-intersect(attack_TIABAYA$UNICODE, aqp_gps_block$UNICODE)#3165
     
     #Merge
     TIABAYA_gps_rociado <- merge(aqp_gps_block,attack_TIABAYA, all= TRUE, by = "UNICODE")
     #Comprobando
-    aux1 <- attack_TIABAYA[attack_TIABAYA$UNICODE%in%diff1,]#479 observaciones 
+    aux1 <- attack_TIABAYA[attack_TIABAYA$UNICODE%in%diff1,]#229 observaciones 
     aux2 <- TIABAYA_gps_rociado[TIABAYA_gps_rociado$UNICODE%in%diff1,]
-    aux3 <- TIABAYA_gps_rociado[TIABAYA_gps_rociado$UNICODE%in%diff2,]#25
- #-----------------------------------------------------------------------------------   
+    aux3 <- TIABAYA_gps_rociado[TIABAYA_gps_rociado$UNICODE%in%diff2,]#26
+    
+    write.csv(aux1,"~/CLAUDIA-DATOS-/claudia codigos r/dif_roci_aqp/TIABAYA_dif_sir_nogoo.csv",row.names = FALSE)
+    
+    #-----------------------------------------------------------------------------------   
     #uniendo bases 
-    diff1<-setdiff(attack_SOCABAYA$UNICODE,aqp_gps_block$UNICODE) #  138viviendas
-    diff2<-setdiff(aqp_gps_block$UNICODE,attack_SOCABAYA$UNICODE) # 5200Viviendas 
+    diff1<-setdiff(attack_SOCABAYA$UNICODE,aqp_gps_block$UNICODE) #  109viviendas que estan en el rociado pero no en en los puntos con manzana
+    diff2<-setdiff(aqp_gps_block$UNICODE,attack_SOCABAYA$UNICODE) # 5345Viviendas que estan en aqp pero que no estan en el rociado  
     #Interseccion
-    interseption<-intersect(attack_SOCABAYA$UNICODE, aqp_gps_block$UNICODE)#10143
+    interseption<-intersect(attack_SOCABAYA$UNICODE, aqp_gps_block$UNICODE)#10172 que coinciden en amabas tablas 
     
     #Merge
-    SOCABAYA_gps_rociado <- merge(aqp_gps_block,attack_SOCABAYA, all= TRUE, by = "UNICODE")
+    SOCABAYA_gps_rociado <- merge(aqp_gps_block,attack_SOCABAYA, all= TRUE, by = "UNICODE")#24966 resgistros entre roaciadas 
     #Comprobando
-    aux1 <- attack_SOCABAYA[attack_SOCABAYA$UNICODE%in%diff1,]#256 observaciones 
-    aux2 <- SOCABAYA_gps_rociado[SOCABAYA_gps_rociado$UNICODE%in%diff1,]
-    aux3 <- SOCABAYA_gps_rociado[SOCABAYA_gps_rociado$UNICODE%in%diff2,]#5200
+    aux1 <- attack_SOCABAYA[attack_SOCABAYA$UNICODE%in%diff1,]#201 observaciones 
+    aux2 <- SOCABAYA_gps_rociado[SOCABAYA_gps_rociado$UNICODE%in%diff1,]#201 observaciones 
+    aux3 <- SOCABAYA_gps_rociado[SOCABAYA_gps_rociado$UNICODE%in%diff2,]#5345
+
+    write.csv(aux1,"~/CLAUDIA-DATOS-/claudia codigos r/dif_roci_aqp/socabaya_dif_sir_nogoo.csv",row.names = FALSE)
+    #------------------------------------------------------------------------------    
+    #uniendo bases PAUCARPATA 2006-2009
+    diff1<-setdiff(attack_PAUCARPATA$UNICODE,aqp_gps_block$UNICODE) #  701viviendas
+    diff2<-setdiff(aqp_gps_block$UNICODE,attack_PAUCARPATA$UNICODE) # 7741Viviendas 
+    #Interseccion
+    interseption<-intersect(attack$UNICODE,aqp_gps_block$UNICODE)#19872
+    
+    #Merge
+    PAUCARPATA_gps_rociado <- merge(aqp_gps_block,attack_PAUCARPATA, all= TRUE, by = "UNICODE")
+    #Comprobando
+    aux1 <- attack_PAUCARPATA[attack_PAUCARPATA$UNICODE%in%diff1,]# 805 observaciones 
+    aux2 <- PAUCARPATA_gps_rociado[PAUCARPATA_gps_rociado$UNICODE%in%diff1,]
+    aux3 <- PAUCARPATA_gps_rociado[PAUCARPATA_gps_rociado$UNICODE%in%diff2,]#7741 houses 
+    
+    
+    write.csv(aux1,"~/CLAUDIA-DATOS-/claudia codigos r/dif_roci_aqp/PAUCARPATA_dif_sir_nogoo.csv",row.names = FALSE)
+ #--------------------------------------------------------------------------   
+    
+    #UNIENDO BASES PAUCARPATA 2009-2015
+    #uniendo bases 
+    diff1<-setdiff(attack_p_2$UNICODE,aqp_gps_block$UNICODE) #  62viviendas
+    diff2<-setdiff(aqp_gps_block$UNICODE,attack_p_2$UNICODE) # 22170Viviendas 
+    #Interseccion
+    interseption<-intersect(attack_p_2$UNICODE, aqp_gps_block$UNICODE)#5119
+    
+    #Merge
+    attack_p_2_gps_rociado <- merge(aqp_gps_block,attack_p_2, all= TRUE, by = "UNICODE")
+    #Comprobando
+    aux1 <- attack_p_2[attack_p_2$UNICODE%in%diff1,]#83 observaciones 
+    aux2 <- attack_p_2_gps_rociado[attack_p_2_gps_rociado$UNICODE%in%diff1,]
+    aux3 <- attack_p_2_gps_rociado[attack_p_2_gps_rociado$UNICODE%in%diff2,]#22170 
+    
+    #------------------------------------------------------------------------------------      
+    #uniendo bases 
+    diff1<-setdiff(attack_UCHUMAYO$UNICODE,aqp_gps_block$UNICODE) #  123viviendas
+    diff2<-setdiff(aqp_gps_block$UNICODE,attack$UNICODE) # 1215Viviendas 
+    #Interseccion
+    interseption<-intersect(attack_UCHUMAYO$UNICODE, aqp_gps_block$UNICODE)#1846
+    #Merge
+    UCHUMAYO_gps_rociado <- merge(aqp_gps_block,attack_UCHUMAYO, all= TRUE, by = "UNICODE")
+    #Comprobando
+    aux1 <- attack_UCHUMAYO[attack_UCHUMAYO$UNICODE%in%diff1,]#243 observaciones 
+    aux2 <- UCHUMAYO_gps_rociado[UCHUMAYO_gps_rociado$UNICODE%in%diff1,]
+    aux3 <- UCHUMAYO_gps_rociado[UCHUMAYO_gps_rociado$UNICODE%in%diff2,]#1215
+    
+    write.csv(aux1,"~/CLAUDIA-DATOS-/claudia codigos r/dif_roci_aqp/uchumayo_dif_sir_nogoo.csv",row.names = FALSE)
+    
+    #------------------------------------------------------------------------------------      
+    #uniendo bases 
+    diff1<-setdiff(attack_MIRAFLORES$UNICODE,aqp_gps_block$UNICODE) #  123viviendas
+    diff2<-setdiff(aqp_gps_block$UNICODE,attack_MIRAFLORES$UNICODE) # 4234Viviendas 
+    #Interseccion
+    interseption<-intersect(attack_MIRAFLORES$UNICODE, aqp_gps_block$UNICODE)#8278
+    #Merge
+    MIRAFLORES_gps_rociado <- merge(aqp_gps_block,attack_MIRAFLORES, all= TRUE, by = "UNICODE")
+    #Comprobando
+    aux1 <- attack_MIRAFLORES[attack_MIRAFLORES$UNICODE%in%diff1,]#243 observaciones 
+    aux2 <- MIRAFLORES_gps_rociado[MIRAFLORES_gps_rociado$UNICODE%in%diff1,]
+    aux3 <- MIRAFLORES_gps_rociado[MIRAFLORES_gps_rociado$UNICODE%in%diff2,]#4234
     
 #--------------------------------------------------------------------  
 #Imprimiendo Resultados ROCIADOS DEL 2009 EN ADELANTE 
 #--------------------------------------------------------------------
   
   #Resultado de las viviendas de Mariano Melgar que tienen numero de cuadra
-  write.csv(mmelgar_gps_rociado,"unicode_numberMzn/resultados/mmelgar_gps_rociado.csv", row.names = FALSE)
+  write.csv(mmelgar_gps_rociado,"~/CLAUDIA-DATOS-/claudia codigos r/MERGES_BLOCKS_GPS_ROCIADO/mmelgar_gps_rociado.csv", row.names = FALSE)
   #Resultado de las viviendas de Mariano Melgar que NO tienen numero de cuadra
-  write.csv(no_block,"unicode_numberMzn/resultados/no_b~lock_MARIANOMELGAR.csv", row.names = FALSE)
+  write.csv(no_block,"~/CLAUDIA-DATOS-/claudia codigos r/no_blocks_arequipa/no_block_MARIANOMELGAR.csv", row.names = FALSE)
  
-   #Resultado de las viviendas de CAYMA  que tienen numero de cuadra
-  write.csv(CAYMA_gps_rociado,"~/claudia codigos r/CAYMA_gps_rociado.csv", row.names = FALSE)
+  #Resultado de las viviendas de CAYMA  que tienen numero de cuadra
+  write.csv(CAYMA_gps_rociado,"~/CLAUDIA-DATOS-/claudia codigos r/MERGES_BLOCKS_GPS_ROCIADO/CAYMA_gps_rociado.csv", row.names = FALSE)
   #Resultado de las viviendas de CAYMA  que NO tienen numero de cuadra
-  write.csv(no_block,"~/claudia codigos r/no_block_CAYMA.csv", row.names = FALSE)
+  write.csv(no_block,"~/CLAUDIA-DATOS-/claudia codigos r/no_blocks_arequipa/no_block_CAYMA.csv", row.names = FALSE)
   
   setwd('~/claudia codigos r')
   #Resultado de las viviendas de ASA que tienen numero de cuadra
-  write.csv(ASA_gps_rociado,"~/claudia codigos r/ASA_gps_rociado.csv", row.names = FALSE)
+  write.csv(ASA_gps_rociado,"~/CLAUDIA-DATOS-/claudia codigos r/MERGES_BLOCKS_GPS_ROCIADO/ASA_gps_rociado.csv", row.names = FALSE)
   #Resultado de las viviendas de ASA que NO tienen numero de cuadra
-  write.csv(no_block,"~/claudia codigos r/no_block_ASA.csv", row.names = FALSE)
+  write.csv(no_block,"~/CLAUDIA-DATOS-/claudia codigos r/no_blocks_arequipa/no_block_ASA.csv", row.names = FALSE)
   
   #Resultado de las viviendas de YARABAMBA  que tienen numero de cuadra
-  write.csv(YARABAMBA_gps_rociado,"~/claudia codigos r/YARABAMBA_gps_rociado.csv", row.names = FALSE)
+  write.csv(YARABAMBA_gps_rociado,"~/CLAUDIA-DATOS-/claudia codigos r/MERGES_BLOCKS_GPS_ROCIADO/YARABAMBA_gps_rociado.csv", row.names = FALSE)
   #Resultado de las viviendas de YARABAMBA  que NO tienen numero de cuadra
-  write.csv(no_block,"~/claudia codigos r/no_block_YARABAMBA.csv", row.names = FALSE)
+  write.csv(no_block,"~/CLAUDIA-DATOS-/claudia codigos r/no_blocks_arequipa/no_block_YARABAMBA.csv", row.names = FALSE)
   
   #Resultado de las viviendas de CHARACATO  que tienen numero de cuadra
-  write.csv(CHARACATO_gps_rociado,"~/claudia codigos r/CHARACATO_gps_rociado.csv", row.names = FALSE)
+  write.csv(CHARACATO_gps_rociado,"~/CLAUDIA-DATOS-/claudia codigos r/MERGES_BLOCKS_GPS_ROCIADO/CHARACATO_gps_rociado.csv", row.names = FALSE)
   #Resultado de las viviendas de CHARACATO  que NO tienen numero de cuadra
-  write.csv(no_block,"~/claudia codigos r/no_block_CHARACATO.csv", row.names = FALSE)
+  write.csv(no_block,"~/CLAUDIA-DATOS-/claudia codigos r/no_blocks_arequipa/no_block_CHARACATO.csv", row.names = FALSE)
   
-  
+  #Resultado de las viviendas de CHARACATO  que tienen numero de cuadra
+  write.csv(PAUCARPATA_gps_rociado,"~/CLAUDIA-DATOS-/claudia codigos r/MERGES_BLOCKS_GPS_ROCIADO/PAUCARPATA_gps_rociado.csv", row.names = FALSE)
+  #Resultado de las viviendas de CHARACATO  que NO tienen numero de cuadra
+  write.csv(no_block,"~/CLAUDIA-DATOS-/claudia codigos r/no_blocks_arequipa/no_block_PAUCARPATA.csv", row.names = FALSE)
   
   
   
   
   #Resultado de las viviendas de HUNTER que tienen numero de cuadra
-  write.csv(HUNTER_gps_rociado,"~/claudia codigos r/HUNTER_gps_rociado.csv", row.names = FALSE)
+  write.csv(HUNTER_gps_rociado,"~/CLAUDIA-DATOS-/claudia codigos r/MERGES_BLOCKS_GPS_ROCIADO/HUNTER_gps_rociado.csv", row.names = FALSE)
   #Resultado de las viviendas de HUNTER que NO tienen numero de cuadra
-  write.csv(no_block,"~/claudia codigos r/no_block_HUNTER.csv", row.names = FALSE)
+  write.csv(no_block,"~/CLAUDIA-DATOS-/claudia codigos r/no_blocks_arequipa/no_block_HUNTER.csv", row.names = FALSE)
   
   #Resultado de las viviendas de JLB Y RIVERO que tienen numero de cuadra
-  write.csv(JLB_RIVERO_gps_rociado,"~/claudia codigos r/JLB_RIVERO_gps_rociado.csv", row.names = FALSE)
+  write.csv(JLB_RIVERO_gps_rociado,"~/CLAUDIA-DATOS-/claudia codigos r/MERGES_BLOCKS_GPS_ROCIADO/JLB_RIVERO_gps_rociado.csv", row.names = FALSE)
   #Resultado de las viviendas de HUNTER que NO tienen numero de cuadra
-  write.csv(no_block,"~/claudia codigos r/no_block_JLB.csv", row.names = FALSE)
+  write.csv(no_block,"~/CLAUDIA-DATOS-/claudia codigos r/no_blocks_arequipa/no_block_JLB.csv", row.names = FALSE)
   
   #Resultado de las viviendas de LA JOYA  que tienen numero de cuadra
-  write.csv(LA_JOYA_gps_rociado,"~/claudia codigos r/LA_JOYA_gps_rociado.csv", row.names = FALSE)
+  write.csv(LA_JOYA_gps_rociado,"~/CLAUDIA-DATOS-/claudia codigos r/MERGES_BLOCKS_GPS_ROCIADO/LA_JOYA_gps_rociado.csv", row.names = FALSE)
   #Resultado de las viviendas de HUNTER que NO tienen numero de cuadra
-  write.csv(no_block,"~/claudia codigos r/no_block_LAJOYA.csv", row.names = FALSE)
+  write.csv(no_block,"~/CLAUDIA-DATOS-/claudia codigos r/no_blocks_arequipa/no_block_LAJOYA.csv", row.names = FALSE)
   
   #Resultado de las viviendas de CAYMA  que tienen numero de cuadra
   write.csv(CAYMA_gps_rociado,"~/claudia codigos r/CAYMA_gps_rociado.csv", row.names = FALSE)
@@ -493,9 +634,9 @@
   write.csv(no_block,"~/claudia codigos r/no_block_CAYMA.csv", row.names = FALSE)
  
   #Resultado de las viviendas de ASA que tienen numero de cuadra
-  write.csv(ASA_gps_rociado,"~/claudia codigos r/ASA_gps_rociado.csv", row.names = FALSE)
+  write.csv(ASA_gps_rociado,"~/CLAUDIA-DATOS-/claudia codigos r/MERGES_BLOCKS_GPS_ROCIADO/ASA_gps_rociado.csv", row.names = FALSE)
   #Resultado de las viviendas de ASA que NO tienen numero de cuadra
-  write.csv(no_block,"~/claudia codigos r/no_block_ASA.csv", row.names = FALSE)
+  write.csv(no_block,"~/CLAUDIA-DATOS-/claudia codigos r/no_blocks_arequipa/no_block_ASA.csv", row.names = FALSE)
   
   #Resultado de las viviendas de YARABAMBA  que tienen numero de cuadra
   write.csv(YARABAMBA_gps_rociado,"~/claudia codigos r/YARABAMBA_gps_rociado.csv", row.names = FALSE)
@@ -508,17 +649,30 @@
   write.csv(no_block,"~/claudia codigos r/no_block_CHARACATO.csv", row.names = FALSE)
   
   #Resultado de las viviendas de SACHACA  que tienen numero de cuadra
-  write.csv(SACHACA_gps_rociado,"~/claudia codigos r/SACHACA_gps_rociado.csv", row.names = FALSE)
+  write.csv(SACHACA_gps_rociado,"~/CLAUDIA-DATOS-/claudia codigos r/MERGES_BLOCKS_GPS_ROCIADO/SACHACA_gps_rociado.csv", row.names = FALSE)
   #Resultado de las viviendas de SACHACA  que NO tienen numero de cuadra
-  write.csv(no_block,"~/claudia codigos r/no_block_SACHACA.csv", row.names = FALSE)
+  write.csv(no_block,"~/CLAUDIA-DATOS-/claudia codigos r/no_blocks_arequipa/no_block_SACHACA.csv", row.names = FALSE)
   
   #Resultado de las viviendas de TIABAYA  que tienen numero de cuadra
-  write.csv(TIABAYA_gps_rociado,"~/claudia codigos r/blocks_attack_all_districts/TIABAYA_gps_rociado.csv", row.names = FALSE)
+  write.csv(TIABAYA_gps_rociado,"~/CLAUDIA-DATOS-/claudia codigos r/MERGES_BLOCKS_GPS_ROCIADO/TIABAYA_gps_rociado.csv", row.names = FALSE)
   #Resultado de las viviendas de TIABAYA  que NO tienen numero de cuadra
-  write.csv(no_block,"~/claudia codigos r/no_block_TIABAYA.csv", row.names = FALSE)
+  write.csv(no_block,"~/CLAUDIA-DATOS-/claudia codigos r/no_blocks_arequipa/no_block_TIABAYA.csv", row.names = FALSE)
   
   #Resultado de las viviendas de TIABAYA  que tienen numero de cuadra
-  write.csv(SOCABAYA_gps_rociado,"~/claudia codigos r/blocks_attack_all_districts/SOCABAYA_gps_rociado.csv", row.names = FALSE)
+  write.csv(SOCABAYA_gps_rociado,"~/CLAUDIA-DATOS-/claudia codigos r/MERGES_BLOCKS_GPS_ROCIADO/SOCABAYA_gps_rociado.csv", row.names = FALSE)
   #Resultado de las viviendas de TIABAYA  que NO tienen numero de cuadra
-  write.csv(no_block,"~/claudia codigos r/no_block_SOCABAYA.csv", row.names = FALSE)
+  write.csv(no_block,"~/CLAUDIA-DATOS-/claudia codigos r/no_blocks_arequipa/no_block_SOCABAYA1.csv", row.names = FALSE)
+  
+ #Resultado de las viviendas de UCHUMAYO   que tienen numero de cuadra
+  write.csv(MIRAFLORES_gps_rociado,"~/CLAUDIA-DATOS-/claudia codigos r/MERGES_BLOCKS_GPS_ROCIADO/MIRAFLORES_rociado.csv", row.names = FALSE)
+  
+  #Resultado de las viviendas de TIABAYA  que NO tienen numero de cuadra
+  write.csv(no_block,"~/CLAUDIA-DATOS-/claudia codigos r/no_blocks_arequipa/no_block_UCHUMAYO.csv", row.names = FALSE) 
+  
+  #Resultado de las viviendas de PAUCARPATA   que tienen numero de cuadra
+  write.csv(UCHUMAYO_gps_rociado,"~/CLAUDIA-DATOS-/claudia codigos r/MERGES_BLOCKS_GPS_ROCIADO/UCHUMAYO_gps_rociado.csv", row.names = FALSE)
+  #Resultado de las viviendas de TIABAYA  que NO tienen numero de cuadra
+  write.csv(no_block,"~/CLAUDIA-DATOS-/claudia codigos r/no_blocks_arequipa/no_block_UCHUMAYO.csv", row.names = FALSE) 
+  
+  
   

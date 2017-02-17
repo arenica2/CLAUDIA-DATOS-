@@ -2,8 +2,31 @@ setwd ("~/CLAUDIA-DATOS-/claudia codigos r")
 #limpiando las bases de datos de los consolidados de rociado (attack data 2009 2015,
 # y union rociados 2006-2009) .
 
+
 library(dplyr)
 library(data.table)
+ #LEYENDO EL CONSOLIDADO CON TODOS LOS ROCIADOS HAST EL 2015.
+ATTACK_2006_2015<-read.csv("~/CLAUDIA-DATOS-/claudia codigos r/ATTACK_2006_2015/generalRociadoPA_Claudia_06feb.csv")
+#CAMBIANDO DE NOMBRE A LAS VARIABLES PARA QUE COINCIDAN CON LOS NOMBRES DE LA TABLA ANTERIOR  
+setnames(ATTACK_2006_2015,"PE_TRI","P_TRIAT")
+setnames(ATTACK_2006_2015,"IN_TRI","I_TRIAT")
+setnames(ATTACK_2006_2015,"Residual_T","TRATADA")
+setnames(ATTACK_2006_2015,"Residual_R","RENUENTE")
+setnames(ATTACK_2006_2015,"Residual_C","CERRADA")
+setnames(ATTACK_2006_2015,"Residual_D","DESHABITADA")
+setnames(ATTACK_2006_2015,"Residual_LP","LOCAL_PUBLICO")
+setnames(ATTACK_2006_2015,"Residual_LV","LOTE_VACIO")
+setnames(ATTACK_2006_2015,"CICLO_ROCIADO","CICLO")
+
+varstokeep <- c("UNICODE","P","D","L","V", "P_TRIAT", "I_TRIAT", "FECHA", "CICLO","TRATADA","RENUENTE","CERRADA","DESHABITADA","LOCAL_PUBLICO","LOTE_VACIO")
+ATTACK_2006_2015 <- ATTACK_2006_2015[,varstokeep]
+
+ATTACK_2006_2015<-as.data.table(ATTACK_2006_2015)
+ATTACK_2006_2015<-ATTACK_2006_2015[P==1]
+#ESCOGIENDO LOS D=7,8,9,13,18,23,24,25.
+ATTACK_2006_2015<-ATTACK_2006_2015[D==7|D==8|D==9|D==13|D==18|D==23|D==24|D==25|D==1|D==4|D==3|D==10|D==11|D==12|D==28|D==5]
+
+
 
 #Leyendo el consolidado del rociado UNION ROCIADOS QUE TIENE LOS ROCIADOS DESDE 2006 HASTA
 #HASTA UNA PARTE DEL 2009 .
@@ -35,6 +58,8 @@ attack_2006_2009[DESHABITADA == "NULL", DESHABITADA := "0"]
 attack_2006_2009[CERRADA == "NULL", CERRADA := "0"]
 #PONIENDO TODAS LAS CASAS QUE FUERON RECUPARADAS COMO TRATADAS 
 attack_2006_2009[Residual.Rec == "1", TRATADA := "1"]
+#arreglando detalles e inconsistencias 
+attack_2006_2009[C == "1", TRATADA := "1"]
 
 
 #ELIMINADO LA ULTIMA FILA QUE NO NOS SIRVE 
@@ -65,14 +90,23 @@ attack_data_2009_2015<-set_to(attack_data_2009_2015)
 
 
 
-
-
 #seleccionando solo arequipa 
 attack_data_2009_2015<-attack_data_2009_2015[P==1]
 #Seleccionando solo D= 1,3,4,5,10,11,12,13,28 que estan dentro de nuestro estudio
 attack_data_2009_2015<-attack_data_2009_2015[D==1|D==3|D==4|D==5|D==10|D==11|D==12|D==13|D==28]
 
-write.csv(attack_data_2009_2015,"~/CLAUDIA-DATOS-/claudia codigos r/ATTACK_2006_2015/attack_2009_2015.csv",row.names =FALSE )
+#ARREGLNDO ALGUNAS INCOSISTENCIAS
+ATTACK_2006_2015<-read.csv("~/PETM-shiny/ATTACK_DATA_2006_2015/ATTACK_2006_2015.csv")
+ATTACK_2006_2015<-as.data.table(ATTACK_2006_2015)
+ATTACK_2006_2015$CICLO<-as.character(ATTACK_2006_2015$CICLO)
+ATTACK_2006_2015$TRATADA<-as.character(ATTACK_2006_2015$TRATADA)
+
+
+ATTACK_2006_2015[CICLO == "0", CICLO := "2"]
+
+
+write.csv (ATTACK_2006_2015,'~/PETM-shiny/ATTACK_DATA_2006_2015/ATTACK_2006_2015.csv', row.names =FALSE)
+
 
 
 
