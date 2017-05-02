@@ -1,0 +1,28 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1487394511154.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "8F811D29",
+    "lastKnownWriteTime" : 3419473789575321445,
+    "last_content_update" : 1487394511154,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "e5elw6f2nu",
+        "caption" : "gps_aqp",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=gps_aqp&cache_key=e5elw6f2nu",
+        "displayedObservations" : "144323",
+        "environment" : "",
+        "object" : "gps_aqp",
+        "totalObservations" : "144323",
+        "variables" : "7"
+    },
+    "relative_order" : 9,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_dataframe"
+}

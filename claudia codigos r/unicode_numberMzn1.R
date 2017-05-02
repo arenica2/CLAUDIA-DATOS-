@@ -32,7 +32,7 @@
   attack<-read.csv("~/CLAUDIA-DATOS-/claudia codigos r/ATTACK_2006_2015/ATTACK_2006_2015.csv")
   #LEYENDO LOS ARCHIVOS QUE CONTIENES LOS GP/S DE CASAS NORMALES Y ADICIONADAS .
   
-  casas_aqp<-read.csv("~/claudia codigos r/AREQUIPA_GPS_GOOGLE.csv")
+  casas_aqp<-read.csv("~/CLAUDIA-DATOS-/AQP_GPS_GOOGLE_18_02_2017/AQP_GPS_GOOGLE_corregido.csv")
   casas_aqp_adicionadas <- read.csv("~/CLAUDIA-DATOS-/claudia codigos r/added_aqp_2006_2015.csv")
  #diferencia<-setdiff(casas_aqp$UNICODE,casas_aqp_adicionadas$UNICODE)
   
@@ -181,10 +181,9 @@
 #Verificar si hay duplicados
 
   indice_dupli <- casas_aqp[which(duplicated(casas_aqp$UNICODE)),1]
-  
   duplicados<-casas_aqp[casas_aqp$UNICODE %in% indice_dupli,]
   duplicados <- duplicados[order(duplicados$UNICODE),]
-  
+  casas_aqp<-casas_aqp[!duplicated(casas_aqp$UNICODE), ]
   
   indice_dupli <- casas_aqp_total[which(duplicated(casas_aqp_total$UNICODE)),1]
   
@@ -354,14 +353,14 @@
     
          #--------JUNTANDO CONSOLIDADO CON CUADRAS -----
     #Diferencia C-S v S-C
-    diff1<-setdiff(attack_HUNTER$UNICODE,aqp_gps_block$UNICODE) # 136 viviendas las que etsan en el ataque pero no tenemos puntos 
+    diff1<-setdiff(attack_HUNTER$UNICODE,aqp_gps_block$UNICODE) # 127 viviendas las que etsan en el ataque pero no tenemos puntos 
     diff2<-setdiff(aqp_gps_block$UNICODE,attack_HUNTER$UNICODE) # 609 viviendas que hay aqp_block
     #Interseccion
     interseption<-intersect(attack_HUNTER$UNICODE, aqp_gps_block$UNICODE)#10365
         #Merge
     HUNTER_gps_rociado <- merge(aqp_gps_block,attack_HUNTER, all= TRUE, by = "UNICODE")
     #Comprobando
-    aux1 <- attack_HUNTER[attack_HUNTER$UNICODE%in%diff1,]#147 VIVIENDAS 
+    aux1 <- attack_HUNTER[attack_HUNTER$UNICODE%in%diff1,]#131 VIVIENDAS 
     aux2 <- HUNTER_gps_rociado[HUNTER_gps_rociado$UNICODE%in%diff1,]
     aux3 <- HUNTER_gps_rociado[HUNTER_gps_rociado$UNICODE%in%diff2,]#609
   

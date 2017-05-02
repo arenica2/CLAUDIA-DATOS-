@@ -1,0 +1,21 @@
+{
+    "collab_server" : "",
+    "contents" : "#Requerimientos\n#- Que las casas adicionadas esten en la misma base que las casas a la que corresponden\n#- Tener columnas: UNICODE, V\n\n#-RUTAS UTILIZADAS\nruta_1 <- '/home/luna/Documentos/github/PETM-shiny/unicode_numberMzn/'\n\n#Ruta\nsetwd(ruta_1)\n\n#Leer los archivos\ncasas_rociado <- read.csv(\"AREQUIPA_GPS_GOOGLE/casas_rociado.csv\")\ncasas_aqp<-read.csv(\"AREQUIPA_GPS_GOOGLE/AREQUIPA_GPS_GOOGLE.csv\")\n\n#Convertir a character\ncasas_rociado$UNICODE <- as.character(casas_rociado$UNICODE)\ncasas_rociado$L <- as.character(casas_rociado$L)\ncasas_rociado$V <- as.character(casas_rociado$V)\ncasas_aqp$UNICODE <- as.character(casas_aqp$UNICODE)\ncasas_aqp$L <- as.character(casas_aqp$L)\ncasas_aqp$V <- as.character(casas_aqp$V)\n\n#Seleccionar solo los datos unicos\ncasas_rociado_unicos <- casas_rociado[which(!duplicated(casas_rociado$UNICODE)),]\ndata <- casas_rociado_unicos\n\n#Selecionando solo columnas que nos importan\ndata <- data[,c(\"UNICODE\",\"P\",\"D\",\"L\",\"V\",\"LATITUDE\",\"LONGITUDE\")]\n\n#Agregamos una columna para almacenar la letra de las adicionales\ndata$ADDED <- NA\n\n#Obtener todos las viviendas adicionadas que no tienen gps\nn_row <- nrow(data)  \n\nfor (i in 1:n_row) {\n  #Solo los que no tienen dato\n  if (is.na(data$V[i])) {\n    #Separando UNICODE\n    split_unicode <- unlist(strsplit(data$UNICODE[i], \".\", fixed = TRUE))\n    \n    letter_number <- regexpr(\"[A-Z]\", split_unicode[4])\n    #Pregunta si el segundo argumento es numero\n    if (  letter_number[1]!=-1 ) {\n      data$P[i] <- split_unicode[1]\n      data$D[i] <- split_unicode[2]\n      data$L[i] <- split_unicode[3]\n      viv <- gsub(\"([A-Z])\", \"\",split_unicode[4])\n      \n      num1<-nchar(viv)\n      num2<-nchar(split_unicode[4])\n      \n      data$V[i] <- substring(split_unicode[4], 1, num1)\n      data$ADDED[i] <- substring(split_unicode[4], num2)\n    }\n  }\n}\n\n#Buscamos todas las adicionadas, basandonos en la columna ADDED\ndata_added <- data[!is.na(data$ADDED),]\n#Agregando un campo de UNICODE_FALSO\ndata_added$UNICODE_FALSO <- NA\n\nn_row<-nrow(data_added) \nfor (i in 1:n_row) {\n  #Creamos un unicode falso para poder obtener los GPS\n  data_added$UNICODE_FALSO[i] <- paste(data_added$P[i],data_added$D[i],data_added$L[i],data_added$V[i], sep = \".\")\n}\n#Elimino campos que me causaran inconveniente al hacer el MERGE\ndata_added<- data_added[,c(\"UNICODE\",\"ADDED\",\"UNICODE_FALSO\")]\n\n#Haciendo MERGE con la base principal \"casas_aqp\"\ndata_added <- merge(data_added, casas_aqp, by.x = \"UNICODE_FALSO\", by.y = \"UNICODE\")\n#NOTA: Por el momento al realizar el merge hay 42 viviendas que no tienen su dato correspondiente\n#en la base \"casas_aqp\" pero si esta en \"aqp_rociado\" pero no tienen GPS por eso por el momento no \n#lo tomaremos en cuenta, para un futuro si desean tener todas las adicionadas tienen que solucionar\n#esos inconvenientes poniendoles GPS\n\n#Eliminar la columna UNICODE_FALSO\ndata_added <- data_added[,-1]\n#Contruyendo el numero de vivienda que corresponde realmente \"V + ADDED\"\nn_row<-nrow(data_added) \nfor (i in 1:n_row) {\n  #Creamos un unicode falso para poder obtener los GPS\n  data_added$V[i] <- paste(data_added$V[i], data_added$ADDED[i] ,sep = \"\")\n}\n#Eliminando la columna ADDED\ndata_added<- data_added[,-2]\n\n#--------------------------------------------------------------------  \n#Imprimiendo Resultados\n#--------------------------------------------------------------------\n\n#Resultado de las viviendas adicionadas\nwrite.csv(data_added,\"AREQUIPA_GPS_GOOGLE/added_aqpI.csv\",row.names = FALSE)\n",
+    "created" : 1487395857548.000,
+    "dirty" : true,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "1673408401",
+    "id" : "733D886E",
+    "lastKnownWriteTime" : 2475636339810066802,
+    "last_content_update" : 1487395862863,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 12,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

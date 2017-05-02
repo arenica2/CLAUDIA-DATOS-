@@ -1,0 +1,28 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1487517841215.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "CF425BB",
+    "lastKnownWriteTime" : 30962681237012597,
+    "last_content_update" : 1487517841215,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "v4bf0l93sw",
+        "caption" : "duplicados",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=duplicados&cache_key=v4bf0l93sw",
+        "displayedObservations" : "1528",
+        "environment" : "",
+        "object" : "duplicados",
+        "totalObservations" : "1528",
+        "variables" : "7"
+    },
+    "relative_order" : 13,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_dataframe"
+}

@@ -1,0 +1,28 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1487395285700.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "F15D9E1",
+    "lastKnownWriteTime" : 30962681237012597,
+    "last_content_update" : 1487395285700,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "j4eubkp07r",
+        "caption" : "rociado_gps_unicos",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=rociado_gps_unicos&cache_key=j4eubkp07r",
+        "displayedObservations" : 98257,
+        "environment" : "",
+        "object" : "rociado_gps_unicos",
+        "totalObservations" : 98257,
+        "variables" : 15
+    },
+    "relative_order" : 11,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_dataframe"
+}
