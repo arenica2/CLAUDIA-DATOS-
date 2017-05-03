@@ -7,10 +7,17 @@ ruta_1 <- '~/github/PETM-shiny/unicode_numberMzn/'
 
 #Ruta
 setwd(ruta_1)
-
+library(rgdal)
 #Leer los archivos
-casas_rociado <- read.csv("AREQUIPA_GPS_GOOGLE/casas_rociado.csv")
+casas_rociado <- read.csv("~/PETM-shiny/unicode_numberMzn/AREQUIPA_GPS_GOOGLE/casas_rociado.csv")
 casas_aqp<-read.csv("AREQUIPA_GPS_GOOGLE/AREQUIPA_GPS_GOOGLE.csv")
+
+#convertir a UTM zone 19S 
+cord.dec = SpatialPoints(cbind(casas_rociado$LONGITUDE, -casas_rociado$LATITUDE), proj4string = CRS("+proj=lat"))
+
+# Transforming coordinate to UTM using EPSG=32719 for WGS=84, UTM Zone=19S,
+# Southern Hemisphere)
+cord.UTM <- spTransform(cord.dec, CRS("+init=epsg:32719"))
 
 #Convertir a character
 casas_rociado$UNICODE <- as.character(casas_rociado$UNICODE)
