@@ -1,4 +1,4 @@
-## analisis cerro colorado primer y segundo rociado 
+nos ## analisis cerro colorado primer y segundo rociado 
 ## 
 
 library(data.table)
@@ -14,8 +14,6 @@ merge_cerro[,BOTH_SPRAY:=ifelse(T_Cuantis==1 & T_Cuantis_IICC==1,1,0)]
 merge_cerro[,NONE:=ifelse(T_Cuantis==0 & T_Cuantis_IICC==0,1,0)]
 
 
-ATTACK_2006_2015[CICLO == "0", CICLO := "2"]
-[, ADDED_II_CICLO := ifelse(ESTA_ESTRATEGIAS== 0, 1, 0)]
 
 
 
