@@ -26,3 +26,7 @@ setnames(aux,"V2","PAR_2")
 aux$GROUP_PAR1<-sample(c("CONTROL","AFICHE"),length(aux$PAR_1),replace = T)
 aux[,GROUP_PAR2:=ifelse(GROUP_PAR1=="CONTROL","AFICHE","CONTROL")]
   merge_ExP[, ADDED_II_CICLO := ifelse(ESTA_ESTRATEGIAS== 0, 1, 0)]
+  
+  
+  
+  
