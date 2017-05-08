@@ -2,12 +2,17 @@
 setwd("D:/RABIA_ASA/Mapeos")
 
 #Leer mis archivos
-puntos<-read.csv("puntos.csv",sep=";")
+linea_carlos<-read.csv("~/Downloads/Carlos/CARLOS_02MAY2017_GPS5.csv",sep=",")
 lineas_caminando <- read.csv("ruta_caminando.csv",sep=";")
 lineas_movi <- read.csv("ruta_movilidad.csv",sep=";")
-poligonos_asa<-read.csv("~/Rabies/Mapeos/ASA_poligonos_localidades.csv", sep=";")
+poligonos<-read.csv("~/CLAUDIA-DATOS-/claudia codigos r/Manzanas _Arequipa/Mariano Melgar/MARIANO MELGAR.csv", sep=",")
+
+poligonos_asa<-as.data.table(poligonos)
+poligonos_asa[poligonos==""]<-NA
 
 
+linea_carlos<-as.data.table(linea_carlos)
+linea_carlos[lineas_carlos==" "]<-"NA"
 #Almacenando los campos "LONGITUD" y"LATITUD"
 puntos <- puntos[, c("long","lat")]
 lineas_caminando <- lineas_caminando[, c("ident","long","lat")]
@@ -32,8 +37,8 @@ x<-NULL
 y<-NULL
 n_row <- nrow(poligonos)+1
 for (i in 2:n_row) {
-  if (!is.na(poligonos[i,2])) {
-    x<-c(x,poligonos[i,2])
+  if (!is.na(poligonos[i,4])) {
+    x<-c(x,poligonos[i,4])
     y<-c(y,poligonos[i,3])
   }
   else{
