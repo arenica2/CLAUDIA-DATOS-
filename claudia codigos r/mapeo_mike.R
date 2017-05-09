@@ -6,9 +6,15 @@ linea_carlos<-read.csv("~/Downloads/Carlos/CARLOS_02MAY2017_GPS5.csv",sep=",")
 lineas_caminando <- read.csv("ruta_caminando.csv",sep=";")
 lineas_movi <- read.csv("ruta_movilidad.csv",sep=";")
 poligonos<-read.csv("~/CLAUDIA-DATOS-/claudia codigos r/Manzanas _Arequipa/Mariano Melgar/MARIANO MELGAR.csv", sep=",")
+library(data.table)
+poligonos<-as.data.table(poligonos)
+poligonos[poligonos==" "]<- NA
+poligonos[poligonos==""]<- NA
+poligonos[poligonos==" "]<- 'NA'
+poligonos[poligonos==""]<- 'NA'
 
-poligonos_asa<-as.data.table(poligonos)
-poligonos_asa[poligonos==""]<-NA
+
+
 
 
 linea_carlos<-as.data.table(linea_carlos)
@@ -31,18 +37,19 @@ plot(puntos, col = "black", pch=19, cex = 1, cex.main=0.8, ylab="Latitud", main 
 #puntos vacunacion
 #plot(puntos$long,puntos$lat, col = "red", pch=19, cex = 1, cex.main=0.8, main = "Puntos vacunacion")
 #with(puntos,(plot(puntos$long,puntos$lat,xlab="longitud",ylab = "latitud", main = "puntos de vacunacion")))
-
+quartz()
 #poligonos
+plot.new()
 x<-NULL
 y<-NULL
 n_row <- nrow(poligonos)+1
 for (i in 2:n_row) {
-  if (!is.na(poligonos[i,4])) {
+  if (!is.na(poligonos[i,3])) {
     x<-c(x,poligonos[i,4])
     y<-c(y,poligonos[i,3])
   }
   else{
-    polygon(x,y, border = "grey", lwd = 1)
+    polygon (x,y, border = "grey", lwd = 1)
     #a<-mean(x)
     #b<-mean(y)
     labels(x,y)

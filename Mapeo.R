@@ -2,10 +2,10 @@
 setwd("D:/RABIA_ASA/Mapeos")
 
 #Leer mis archivos
-puntos<-read.csv("puntos.csv",sep=";")
-lineas_caminando <- read.csv("ruta_caminando.csv",sep=";")
+puntos<-read.csv("~/Rabies/Mapeos/puntos.csv",sep=";")
+lineas_caminando <- read.csv("~/Rabies/Mapeos/ruta_caminando.csv",sep=";")
 lineas_movi <- read.csv("ruta_movilidad.csv",sep=";")
-poligonos_asa<-read.csv("~/Rabies/Mapeos/ASA_poligonos_localidades.csv", sep=";")
+poligonos<-read.csv("~/Rabies/Mapeos/ASA_poligonos_localidades.csv", sep=";")
 
 
 #Almacenando los campos "LONGITUD" y"LATITUD"
@@ -26,7 +26,7 @@ plot(puntos, col = "black", pch=19, cex = 1, cex.main=0.8, ylab="Latitud", main 
 #puntos vacunacion
 #plot(puntos$long,puntos$lat, col = "red", pch=19, cex = 1, cex.main=0.8, main = "Puntos vacunacion")
 #with(puntos,(plot(puntos$long,puntos$lat,xlab="longitud",ylab = "latitud", main = "puntos de vacunacion")))
-
+plot.new()
 #poligonos
 x<-NULL
 y<-NULL
