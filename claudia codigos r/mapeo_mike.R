@@ -1,8 +1,15 @@
-#Ruta donde estan los archivos
-setwd("D:/RABIA_ASA/Mapeos")
+
+
+
+
+
+
 
 #Leer mis archivos
-linea_carlos<-read.csv("~/Downloads/Carlos/CARLOS_02MAY2017_GPS5.csv",sep=",")
+puntos<- read.csv("~/PETM-shiny/MODEL_RESULTS/MODEL_RESULTS_2017-03-02.csv",sep = " ")
+linea_carlos<-read.csv("/Users/Rodrigo/Downloads/Carlos/Carlos_26APRIL2017_GPS7.csv",sep=",")
+poligonos<-read.csv("~/CLAUDIA-DATOS-/claudia codigos r/Manzanas _Arequipa/Mariano Melgar/MARIANO MELGAR.csv",sep = ",")
+
 lineas_caminando <- read.csv("ruta_caminando.csv",sep=";")
 lineas_movi <- read.csv("ruta_movilidad.csv",sep=";")
 poligonos<-read.csv("~/CLAUDIA-DATOS-/claudia codigos r/Manzanas _Arequipa/Mariano Melgar/MARIANO MELGAR.csv", sep=",")
@@ -15,12 +22,12 @@ poligonos[poligonos==""]<- 'NA'
 
 
 
-
+c
 
 linea_carlos<-as.data.table(linea_carlos)
 linea_carlos[lineas_carlos==" "]<-"NA"
 #Almacenando los campos "LONGITUD" y"LATITUD"
-puntos <- puntos[, c("long","lat")]
+puntos <- puntos[, c("LONGITUDE","LATITUDE")]
 lineas_caminando <- lineas_caminando[, c("ident","long","lat")]
 lineas_movi <- lineas_movi[, c("ident","long","lat")]
 #rio <- rio[, c("ident","long","lat")]
@@ -33,7 +40,7 @@ poligonos <- poligonos[, c("ident","long","lat")]
 
 
 x11()
-plot(puntos, col = "black", pch=19, cex = 1, cex.main=0.8, ylab="Latitud", main = "Puntos Vacunacion", xlab="Longitud",xlim=c(-71.54,-71.49),ylim=c(-16.39,-16.33))
+plot(puntos, col = "red", pch=1.5, cex = 0.5, cex.main=0.5, main = "MODEL_RESULT")
 #puntos vacunacion
 #plot(puntos$long,puntos$lat, col = "red", pch=19, cex = 1, cex.main=0.8, main = "Puntos vacunacion")
 #with(puntos,(plot(puntos$long,puntos$lat,xlab="longitud",ylab = "latitud", main = "puntos de vacunacion")))
@@ -49,7 +56,7 @@ for (i in 2:n_row) {
     y<-c(y,poligonos[i,3])
   }
   else{
-    polygon (x,y, border = "grey", lwd = 1)
+    polygon (x,y, border = "blue", lwd = 1)
     #a<-mean(x)
     #b<-mean(y)
     labels(x,y)
@@ -61,14 +68,14 @@ for (i in 2:n_row) {
 #ruta caminando
 x<-NULL
 y<-NULL
-n_row <- nrow(lineas_caminando)+1
-for (i in 2:n_row) {
-  if (!is.na(lineas_caminando[i,2])) {
-    x<-c(x,lineas_caminando[i,2])
-    y<-c(y,lineas_caminando[i,3])
+n_row <- nrow(linea_carlos)+1
+for (i in 1:n_row) {
+  if (!is.na(linea_carlos[i,3])) {
+    x<-c(x,linea_carlos[i,3])
+    y<-c(y,linea_carlos[i,4])
   }
   else{
-    lines(x,y,col="red",pch=19, lwd=3)
+    lines(x,y,col="black",pch=19, lwd=3)
     x<-NULL
     y<-NULL
   }
