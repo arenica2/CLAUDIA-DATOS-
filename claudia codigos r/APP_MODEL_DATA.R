@@ -2,7 +2,7 @@ library(ggplot2)
 library(ggmap)
 library(maps)
 library(mapdata)
-
+library(data.table)
 
 
 
@@ -11,7 +11,10 @@ CARLOS<-read.csv('~/PETM-shiny/PRUEBAS_MODEL/DATA_APP_PILOT/Carlos/CARLOS_02MAY2
 CARLOS<-CARLOS[,c('Latitude','Longitude',"Date")]
 MODEL_RESULT<- read.csv("~/PETM-shiny/MODEL_RESULTS/MODEL_RESULTS_2017-03-02.csv",sep = " ")
 poligonos<-read.csv("~/PETM-shiny/PRUEBAS_MODEL/Manzanas _Arequipa/Mariano Melgar/MARIANO MELGAR.csv",sep = ",")
-usa <- map_data("CARLOS")
+poligonos<-as.data.table(poligonos)
+poligonos<-poligonos [lat!='NA']
+
+
 
 usa <- map_data("usa") # we already did this, but we can do it again
 ggplot() + geom_polygon(data = usa, aes(x=long, y = lat, group = group))+
@@ -25,7 +28,7 @@ ggplot()+
   points(MODEL_RESULT$LONGITUDE,MODEL_RESULT$LATITUDE)+
   coord_fixed(xlim = c(-123, -121.0),  ylim = c(36, 38), ratio = 1.3)
 ggplot()+
- geom_polygon(data = poligonos, aes(x=poligonos$Longitude, y = poligonos$Latitude, group = 'ident'), fill = NA, color = "green") 
+ geom_polygon(data = poligonos, aes(x=poligonos$long, y = poligonos$lat, group = 'ident'),size=0.3, fill = NA, color = "green") 
  geom_path(data = CARLOS, aes(x=CARLOS$Longitude, y = CARLOS$Latitude, group = 'Date'), size = 0.5, lineend = "round") + 
   scale_color_gradientn(colours = rainbow(7), breaks = seq(25, 200, by = 25))
 
