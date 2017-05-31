@@ -9,51 +9,26 @@
   install.packages("sp")
   library(spatialEco)
   library(sp)
-  
   library(dplyr)
-  
-  
   library(data.table)
 
 #-RUTAS UTILIZADAS
-  
   ruta_1 <- '~/CLAUDIA-DATOS-/claudia codigos r/'
-
 #Ruta
-  
-  
-  
   setwd(ruta_1)
   
 #Leer los archivos
+#Base de datos CONSOLIDADO GENERAL TODOS LOS DISTRITOS 2006-2015 hasta antes de Cerro Colorado 
+   attack<-read.csv("~/CLAUDIA-DATOS-/claudia codigos r/ATTACK_2006_2015/ATTACK_2006_2015.csv")
   
-  #Base de datos CONSOLIDADO GENERAL TODOS LOS DISTRITOS 2006-2015
-
-  attack<-read.csv("~/CLAUDIA-DATOS-/claudia codigos r/ATTACK_2006_2015/ATTACK_2006_2015.csv")
-  #LEYENDO LOS ARCHIVOS QUE CONTIENES LOS GP/S DE CASAS NORMALES Y ADICIONADAS .
+#LEYENDO LOS ARCHIVOS QUE CONTIENEn LOS GP/S DE CASAS NORMALES Y ADICIONADAS .
   
-  casas_aqp<-read.csv("~/CLAUDIA-DATOS-/AQP_GPS_GOOGLE_18_02_2017/AQP_GPS_GOOGLE_corregido.csv")
-  casas_aqp_adicionadas <- read.csv("~/CLAUDIA-DATOS-/claudia codigos r/added_aqp_2006_2015.csv")
- #diferencia<-setdiff(casas_aqp$UNICODE,casas_aqp_adicionadas$UNICODE)
+   casas_aqp<-read.csv("~/Downloads/AQP_GPS_GOOGLE_EARTH_PUNTOS.csv",sep = ';')
   
- puntoscorregidos<-read.csv("~/CLAUDIA-DATOS-/claudia codigos r/puntos_corregidos/HUNTER_POINTS.csv")
-  puntoscorregidos<-read.csv("~/CLAUDIA-DATOS-/claudia codigos r/puntos_corregidos/JLB_POINTS.csv")
- puntoscorregidos<-read.csv("~/CLAUDIA-DATOS-/claudia codigos r/puntos_corregidos/LAJOYA_POINTS.csv")
- puntoscorregidos<-read.csv("~/CLAUDIA-DATOS-/claudia codigos r/puntos_corregidos/PAUCARPATA_POINTS.csv")
- puntoscorregidos<-read.csv("~/CLAUDIA-DATOS-/claudia codigos r/puntos_corregidos/SACHACA_POINTS.csv")
- puntoscorregidos<-read.csv("~/CLAUDIA-DATOS-/claudia codigos r/puntos_corregidos/UCHUMAYO_POINTS.csv")
-  puntoscorregidos<-read.csv("~/CLAUDIA-DATOS-/claudia codigos r/puntos_corregidos/TIABAYA_POINTS.csv")
-  puntoscorregidos<-read.csv("~/CLAUDIA-DATOS-/claudia codigos r/puntos_corregidos/SOCABAYA_POINTS.csv")
-  puntoscorregidos<-read.csv("~/CLAUDIA-DATOS-/claudia codigos r/puntos_corregidos/ASA_POINTS.csv")
-  puntoscorregidos<-read.csv("~/CLAUDIA-DATOS-/claudia codigos r/puntos_corregidos/CAYMA_POINTS.csv")
-  puntoscorregidos<-read.csv("~/CLAUDIA-DATOS-/claudia codigos r/puntos_corregidos/MIRAFLORES_POINTS.csv")
-  puntoscorregidos<-read.csv("~/CLAUDIA-DATOS-/claudia codigos r/puntos_corregidos/CHARACATO_POINTS.csv")
-  puntoscorregidos<-read.csv("~/CLAUDIA-DATOS-/claudia codigos r/puntos_corregidos/YARABAMBA_POINTS.csv")
-
   #OBTENIENDO LAS BASES DE MANZANA  HUNTER ,JLB Y RIVERO ,LA JOYA ,SACHACA,UCHUMAYO,TIABAYA Y SOCABAYA 
   
-  nc_HUNTER<-read.csv("~/CLAUDIA-DATOS-/Hunter_Mz_06FEB2017.csv")
-  nc_HUNTER[nc_HUNTER==" "]<-"NA"
+   nc_HUNTER<-read.csv("~/CLAUDIA-DATOS-/Hunter_Mz_06FEB2017.csv")
+   nc_HUNTER[nc_HUNTER==" "]<-"NA"
   
   nc_JLB_RIVERO<-read.csv("~/CLAUDIA-DATOS-/JLByRivero_Mz_corregido.csv",sep = ",")
   nc_LAJOYA<-read.csv("~/CLAUDIA-DATOS-/La_Joya_Mz_corregido.csv")
@@ -82,12 +57,21 @@
   attack_mm <- attack[(1==attack$P & 10==attack$D),]
   #Seleccionando solo los campos que necesito
   attack_mm <- attack_mm[,c("UNICODE", "I_TRIAT", "P_TRIAT", "FECHA", "CICLO","TRATADA","RENUENTE","CERRADA","DESHABITADA","LOCAL_PUBLICO","LOTE_VACIO")]
+  attack_mm <- as.data.table(attack_mm)
+  attack_mm$UNICODE <- gsub("\\s+", "", attack_mm$UNICODE)
+  
+  
+  
+  
 #--------------------------
     #--SOLO CONSOLIDADO--
     #Extrayendo solo datos de HUNTER del consolidado
     attack_HUNTER <- attack[(1==attack$P & 7==attack$D),]
     #Seleccionando solo los campos que necesito
     attack_HUNTER <- attack_HUNTER[,c("UNICODE", "I_TRIAT", "P_TRIAT", "FECHA", "CICLO","TRATADA","RENUENTE","CERRADA","DESHABITADA","LOCAL_PUBLICO","LOTE_VACIO")]
+    attack_HUNTER <- as.data.table(attack_HUNTER)
+    attack_HUNTER$UNICODE <- gsub("\\s+", "", attack_HUNTER$UNICODE)
+    
     #-------------------------- 
     #--SOLO CONSOLIDADO--
     #Extrayendo solo datos de MARIANO MELGAR del consolidado
@@ -175,25 +159,27 @@
     attack_UCHUMAYO <- attack_UCHUMAYO[,c("UNICODE", "I_TRIAT", "P_TRIAT", "FECHA", "CICLO","TRATADA","RENUENTE","CERRADA","DESHABITADA","LOCAL_PUBLICO","LOTE_VACIO")]   
   
     
-  #Juntando las casas adicionadas con el total de viviendas
-  casas_aqp_total <-rbind(puntoscorregidos,casas_aqp_adicionadas)
-  casas_aqp_total<-rbind(casas_aqp,casas_aqp_adicionadas)
 #Verificar si hay duplicados
+    casas_aqp<-as.data.table(casas_aqp) 
+    DUPLICADOS<-casas_aqp[duplicated(casas_aqp$UNICODE)]
+   
+    
+  #Eliminando duplicados 
+    casas_aqp<-casas_aqp[!duplicated(casas_aqp$UNICODE), ]
 
-  indice_dupli <- casas_aqp[which(duplicated(casas_aqp$UNICODE)),1]
-  duplicados<-casas_aqp[casas_aqp$UNICODE %in% indice_dupli,]
-  duplicados <- duplicados[order(duplicados$UNICODE),]
-  casas_aqp<-casas_aqp[!duplicated(casas_aqp$UNICODE), ]
+
+  #indice_dupli <- casas_aqp[which(duplicated(casas_aqp$UNICODE)),1]
+  #duplicados<-casas_aqp[casas_aqp$UNICODE %in% indice_dupli,]
+  #duplicados <- duplicados[order(duplicados$UNICODE),]
+  #casas_aqp<-casas_aqp[!duplicated(casas_aqp$UNICODE), ]
   
-  indice_dupli <- casas_aqp_total[which(duplicated(casas_aqp_total$UNICODE)),1]
+  #indice_dupli <- casas_aqp_total[which(duplicated(casas_aqp_total$UNICODE)),1]
   
-  duplicados<-casas_aqp_total[casas_aqp_total$UNICODE %in% indice_dupli,]
-  duplicados <- duplicados[order(duplicados$UNICODE),]
+  #duplicados<-casas_aqp_total[casas_aqp_total$UNICODE %in% indice_dupli,]
+  #duplicados <- duplicados[order(duplicados$UNICODE),]
 
-  #Eliminando duplicados
+  
 
-  #AUX<-casas_aqp_total[duplicated(casas_aqp_total$UNICODE), ]
-  casas_aqp_total<-casas_aqp_total[!duplicated(casas_aqp_total$UNICODE), ]
  # casas_aqp_total<-distinct(casas_aqp_total)
   
   #casas_aqp_total[duplicated(casas_aqp_total)]
@@ -216,16 +202,13 @@
   nc_polygon <- nc_UCHUMAYO
   nc_polygon <- nc_MIRAFLORES
   
+  old_casa_aqp <- casas_aqp
   
-  
-  old_casa_aqp <- casas_aqp_total
-  old_casa_aqp <-puntoscorregidos
 #Convirtiendo de factor a character o numero a caracter
   nc_polygon$ident <- as.character(nc_polygon$ident)
   nc_polygon$long <- as.character(nc_polygon$long)
   nc_polygon$lat <- as.character(nc_polygon$lat)
   old_casa_aqp$D <- as.character(old_casa_aqp$D)
-  
   old_casa_aqp$L <- as.character(old_casa_aqp$L)
 
 #Creando columna para el numero de localidad y de cuadra
@@ -353,18 +336,21 @@
     
          #--------JUNTANDO CONSOLIDADO CON CUADRAS -----
     #Diferencia C-S v S-C
-    diff1<-setdiff(attack_HUNTER$UNICODE,aqp_gps_block$UNICODE) # 127 viviendas las que etsan en el ataque pero no tenemos puntos 
-    diff2<-setdiff(aqp_gps_block$UNICODE,attack_HUNTER$UNICODE) # 609 viviendas que hay aqp_block
+    diff1<-setdiff(attack_HUNTER$UNICODE,aqp_gps_block$UNICODE) # 19 viviendas las que etsan en el ataque pero no tenemos puntos 
+    diff2<-setdiff(aqp_gps_block$UNICODE,attack_HUNTER$UNICODE) # 597 viviendas que hay  en aqp_block
     #Interseccion
     interseption<-intersect(attack_HUNTER$UNICODE, aqp_gps_block$UNICODE)#10365
-        #Merge
+    #Merge
     HUNTER_gps_rociado <- merge(aqp_gps_block,attack_HUNTER, all= TRUE, by = "UNICODE")
+    
+    faltantes<-HUNTER_gps_rociado[which(is.na(HUNTER_gps_rociado$LATITUDE))]
+    duplicados<-faltantes[duplicated(faltantes$UNICODE)]
     #Comprobando
     aux1 <- attack_HUNTER[attack_HUNTER$UNICODE%in%diff1,]#131 VIVIENDAS 
     aux2 <- HUNTER_gps_rociado[HUNTER_gps_rociado$UNICODE%in%diff1,]
-    aux3 <- HUNTER_gps_rociado[HUNTER_gps_rociado$UNICODE%in%diff2,]#609
+    aux3 <- HUNTER_gps_rociado[HUNTER_gps_rociado$UNICODE%in%diff2,]#597
   
-    idff<-setdiff(attack_HUNTER$UNICODE,casas_aqp_total$UNICODE)
+    idff<-setdiff(attack_HUNTER$UNICODE,casas_aqp$UNICODE)
     baux<-attack_HUNTER[attack_HUNTER$UNICODE%in%idff,]#130
     
     write.csv(aux1,"~/CLAUDIA-DATOS-/claudia codigos r/dif_roci_aqp/hunter_dif_sir_nogoo.csv",row.names = FALSE)

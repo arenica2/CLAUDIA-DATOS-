@@ -13,70 +13,65 @@ MODEL_RESULT<- read.csv("~/PETM-shiny/MODEL_RESULTS/MODEL_RESULTS_2017-03-02.csv
 poligonos<-read.csv("~/PETM-shiny/PRUEBAS_MODEL/Manzanas _Arequipa/Mariano Melgar/MARIANO MELGAR.csv",sep = ",")
 poligonos<-as.data.table(poligonos)
 poligonos<-poligonos [lat!='NA']
+poligonos<-poligonos[, c('CODELOC','BLOCK') := tstrsplit(ident, "-", fixed=TRUE)]
+poligonos<-poligonos[CODELOC=='1.10.38']
+poligonos <- poligonos[order(poligonos$BLOCK),]
+inspections_app<-read.csv('~/PETM-shiny/BackUp_App_Inspections/Backup_Inspecctions_9_may_2017.csv',sep = ';')
+
+library(data.table)
+inspections_app<-as.data.table(inspections_app)
+inspections_app<-inspections_app[TEST_DATA==0 & USER_NAME=='CCP_1V']
+inspections_app<-inspections_app[PREDICTED_COLOR!='']
+inspections_app<-inspections_app[, c('fecha','hora') := tstrsplit(DATETIME, " ", fixed=TRUE)]
+inspections_app<-inspections_app[fecha=='2017-05-02']
+setnames(inspections_app,'UNI_CODE','UNICODE')
+
+inspections_app<-merge(inspections_app,MODEL_RESULT,by='UNICODE',all.x = TRUE)
+
+#carlos<-as.matrix(table(inspections_app$USER_NAME))
+#inspections<-as.matrix(table(inspections_app$STATUS_INSPECCION))
 
 
 
-usa <- map_data("usa") # we already did this, but we can do it again
-ggplot() + geom_polygon(data = usa, aes(x=long, y = lat, group = group))+
-  points(MODEL_RESULT$LONGITUDE,MODEL_RESULT$LATITUDE)+
-  
 
-plot.new()
-x11()
-ggplot()+
-  geom_point(data = MODEL_RESULT, aes(x = MODEL_RESULT$LONGITUDE, y = MODEL_RESULT$LATITUDE), col=colfunc,cex=1,pch=19) +
-  points(MODEL_RESULT$LONGITUDE,MODEL_RESULT$LATITUDE)+
-  coord_fixed(xlim = c(-123, -121.0),  ylim = c(36, 38), ratio = 1.3)
-ggplot()+
- geom_polygon(data = poligonos, aes(x=poligonos$long, y = poligonos$lat, group = 'ident'),size=0.3, fill = NA, color = "green") 
- geom_path(data = CARLOS, aes(x=CARLOS$Longitude, y = CARLOS$Latitude, group = 'Date'), size = 0.5, lineend = "round") + 
-  scale_color_gradientn(colours = rainbow(7), breaks = seq(25, 200, by = 25))
 
-  bike <- read.csv("data/bike-ride.csv")
-  head(bike)
-  #>         lon      lat elevation                 time
-  #> 1 -122.0646 36.95144      15.8 2011-12-08T19:37:56Z
-  #> 2 -122.0646 36.95191      15.5 2011-12-08T19:37:59Z
-  #> 3 -122.0645 36.95201      15.4 2011-12-08T19:38:04Z
-  #> 4 -122.0645 36.95218      15.5 2011-12-08T19:38:07Z
-  #> 5 -122.0643 36.95224      15.7 2011-12-08T19:38:10Z
-  #> 6 -122.0642 36.95233      15.8 2011-12-08T19:38:13Z
-  
-  
-  bikemap1 <- get_map(location = c(-122.080954, 36.971709), maptype = "terrain", source = "google", zoom = 14)
-  #> Map from URL : http://maps.googleapis.com/maps/api/staticmap?center=36.971709,-122.080954&zoom=14&size=640x640&scale=2&maptype=terrain&language=en-EN&sensor=false
-  ggmap(bikemap1) + 
-    geom_path(data = bike, aes(color = elevation), size = 3, lineend = "round") + 
-    scale_color_gradientn(colours = rainbow(7), breaks = seq(25, 200, by = 25))
 
-  bikemap1 <- get_map(location = c(-16.42563,-71.52599), maptype = "n", source = "osm", zoom = 14)
-  #> Map from URL : http://maps.googleapis.com/maps/api/staticmap?center=36.971709,-122.080954&zoom=14&size=640x640&scale=2&maptype=terrain&language=en-EN&sensor=false
-  ggmap(bikemap1) + 
-    
-   
+
+
     
     
-    
-    
-    
-    
-    
-    
-    
-  
-  
+  shape = 21, colour = "black", fill = "white", size = 5 , stroke = 5
+  x11()
   plot.new()
   ggplot()+
     geom_point(data = MODEL_RESULT, aes(x = MODEL_RESULT$LONGITUDE, y = MODEL_RESULT$LATITUDE), col=colfunc,cex=1,pch=19) +
-    points(MODEL_RESULT$LONGITUDE,MODEL_RESULT$LATITUDE)+
-    coord_fixed(xlim = c(-71.5150, -71.5000),  ylim = c(-16.405, -16.411), ratio = 1.3)+
+    #point(MODEL_RESULT$LONGITUDE,MODEL_RESULT$LATITUDE)+
+    coord_fixed(xlim = c(-71.505, -71.5000),  ylim = c(-16.405, -16.407), ratio = 1.3)+
   
   
-  
+    ggplot()+
+    geom_polygon(data = poligonos, aes(x=poligonos$long, y = poligonos$lat, group = ident),size=0.2, fill = NA, color = "black")+ 
   
   
    ggplot()+
-    geom_path(data = CARLOS, aes(x=CARLOS$Longitude,y=CARLOS$Latitude,group='Date'), size = 1, lineend = "round")+  
+    geom_path(data = CARLOS, aes(x=CARLOS$Longitude,y=CARLOS$Latitude,group='Date'),col='blue', size = 0.3, lineend = "round")+ 
     scale_color_gradientn(colours = rainbow(7), breaks = seq(25, 200, by = 25))
 
-   coord_fixed(xlim = c(-71.515, -71.500),  ylim = c(-16.40, -16.41), ratio = 1.3)
+    geom_point(data = inspections_app, mapping = aes(x = inspections_app$LONGITUDE, y = inspections_app$LATITUDE,group=STATUS_INSPECCION),shape='.', fill = NA)+
+    geom_text(data = inspections_app, aes(x=inspections_app$LONGITUDE,y=inspections_app$LATITUDE,label = paste("  ", as.character(STATUS_INSPECCION), sep="")), angle = 0, hjust = 0, color = "black")
+    
+    
+    
+library(zoom)   
+    
+ zm
+ 
+    
+    
+    
+    
+    
+    
+    
+    
+    
