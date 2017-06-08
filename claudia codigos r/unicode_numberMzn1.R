@@ -23,7 +23,7 @@
   
 #LEYENDO LOS ARCHIVOS QUE CONTIENEn LOS GP/S DE CASAS NORMALES Y ADICIONADAS .
   
-   casas_aqp<-read.csv("~/Downloads/AQP_GPS_GOOGLE_EARTH_PUNTOS.csv",sep = ';')
+   casas_aqp<-read.csv("~/Rabies/Mapeos/AQP_GPS_GOOGLE_EARTH_PUNTOS_05_jun_2017.csv",sep = ';')
   
   #OBTENIENDO LAS BASES DE MANZANA  HUNTER ,JLB Y RIVERO ,LA JOYA ,SACHACA,UCHUMAYO,TIABAYA Y SOCABAYA 
   
@@ -41,7 +41,11 @@
   
   #OBTENIENDO LAS BASES DE  MANZANA ASA ,CAYMA ,CERRO COLORADO,CHARACATO ,MARIANO MELGAR,MIRAFLORES,MOLLEBAYA
   #PAUCARPATA(2)Y YARABAMBA. 
-  nc_melgar<-read.csv("~/CLAUDIA-DATOS-/claudia codigos r/Manzanas _Arequipa/Mariano Melgar/MARIANO MELGAR.csv")
+  nc_melgar<-read.csv("~/Downloads/Manzanas_MnoMelgar_08JUN2017_actualizados..csv")
+  nc_melgar<-as.data.table(nc_melgar)
+  nc_melgar[ident == "1.10-16-14", ident := "1.10.16-14"]
+  nc_melgar<-as.data.frame(nc_melgar)
+  
   nc_CAYMA <-read.csv("~/CLAUDIA-DATOS-/Cayma_mz_corregido.csv", sep = ",")
   nc_ASA <-read.csv("~/CLAUDIA-DATOS-/ASA_Mz_corregido.csv", sep = ",")
   nc_YARABAMBA<-read.csv ("~/CLAUDIA-DATOS-/Yarabamba_Mz_corregido.csv")
@@ -328,9 +332,9 @@
   #Merge
     mmelgar_gps_rociado <- merge(aqp_gps_block,attack_mm, all= TRUE, by = "UNICODE")
   #Comprobando
-    aux1 <- attack_mm[attack_mm$UNICODE%in%diff1,]#35
-    aux2 <- mmelgar_gps_rociado[mmelgar_gps_rociado$UNICODE%in%diff1,]
-    aux3 <- mmelgar_gps_rociado[mmelgar_gps_rociado$UNICODE%in%diff2,]#3172
+    aux1 <- attack_mm[attack_mm$UNICODE%in%diff1,]#78
+    aux2 <- mmelgar_gps_rociado[mmelgar_gps_rociado$UNICODE%in%diff1,]#78
+    aux3 <- mmelgar_gps_rociado[mmelgar_gps_rociado$UNICODE%in%diff2,]#3762
     
     write.csv(aux1,"~/CLAUDIA-DATOS-/claudia codigos r/dif_roci_aqp/mmelgar_dif_sir_nogoo.csv",row.names = FALSE)
     
@@ -565,9 +569,9 @@
 #--------------------------------------------------------------------
   
   #Resultado de las viviendas de Mariano Melgar que tienen numero de cuadra
-  write.csv(mmelgar_gps_rociado,"~/CLAUDIA-DATOS-/claudia codigos r/MERGES_BLOCKS_GPS_ROCIADO/mmelgar_gps_rociado.csv", row.names = FALSE)
+  write.csv(mmelgar_gps_rociado,"~/CLAUDIA-DATOS-/claudia codigos r/MERGES_BLOCKS_GPS_ROCIADO/mmelgar_gps_rociado_JUN_2017.csv", row.names = FALSE)
   #Resultado de las viviendas de Mariano Melgar que NO tienen numero de cuadra
-  write.csv(no_block,"~/CLAUDIA-DATOS-/claudia codigos r/no_blocks_arequipa/no_block_MARIANOMELGAR.csv", row.names = FALSE)
+  write.csv(no_block,"~/CLAUDIA-DATOS-/claudia codigos r/no_blocks_arequipa/no_block_MARIANOMELGAR_JUN_2017.csv", row.names = FALSE)
  
   #Resultado de las viviendas de CAYMA  que tienen numero de cuadra
   write.csv(CAYMA_gps_rociado,"~/CLAUDIA-DATOS-/claudia codigos r/MERGES_BLOCKS_GPS_ROCIADO/CAYMA_gps_rociado.csv", row.names = FALSE)
