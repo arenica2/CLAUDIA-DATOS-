@@ -30,13 +30,16 @@
    nc_HUNTER<-read.csv("~/CLAUDIA-DATOS-/Hunter_Mz_06FEB2017.csv")
    nc_HUNTER[nc_HUNTER==" "]<-"NA"
   
-  nc_JLB_RIVERO<-read.csv("~/CLAUDIA-DATOS-/JLByRivero_Mz_corregido.csv",sep = ",")
+  nc_JLB_RIVERO<-read.csv("~/Downloads/JLByRivero_Mz_26JUN2017.csv",sep = ";")
+  
+  
+  
   nc_LAJOYA<-read.csv("~/CLAUDIA-DATOS-/La_Joya_Mz_corregido.csv")
-  nc_SACHACA<-read.csv("~/CLAUDIA-DATOS-/Sachaca_Mz_02FEB2017.csv")
+  nc_SACHACA<-read.csv("~/Downloads/Sachaca_Mz_26JUN2017 (1).csv",sep = ';')
   nc_SACHACA[nc_SACHACA== "NA"]<-NA
   nc_UCHUMAYO<-read.csv("~/CLAUDIA-DATOS-/Uchumayo_Mz_07FEB2017.csv",sep = ",")
   
-  nc_TIABAYA<-read.csv("~/CLAUDIA-DATOS-/Tiabaya_Mz_corregido.csv")
+  nc_TIABAYA<-read.csv("~/Downloads/Tiabaya_Mz_26JUN2017.csv",sep = ';')
   nc_SOCABAYA<-read.csv("~/Downloads/Manzanas_Socabaya_19JUN2017_actualizado.csv",sep = ';')
   
   #OBTENIENDO LAS BASES DE  MANZANA ASA ,CAYMA ,CERRO COLORADO,CHARACATO ,MARIANO MELGAR,MIRAFLORES,MOLLEBAYA
@@ -51,8 +54,8 @@
   nc_YARABAMBA<-read.csv ("~/CLAUDIA-DATOS-/Yarabamba_Mz_corregido.csv")
   nc_MIRAFLORES <-read.csv ("~/CLAUDIA-DATOS-/Miraflores_mz_corregido.csv")
   #nc_CERRO_COLORADO <-read.csv("~/claudia codigos r/Manzanas _Arequipa/Cerro Colorado/Cerro Colorado MZ.csv", sep = ";")
-  nc_CHARACATO <-read.csv("~/CLAUDIA-DATOS-/Characato_Mz_03FEB2017.csv")
-  nc_PAUCARPATA<-read.csv("~/CLAUDIA-DATOS-/Paucarpata_Mz_07FEB2017.csv")
+  nc_CHARACATO <-read.csv("~/Downloads/Characato_Mz_26JUN2017.csv",sep = ';')
+  nc_PAUCARPATA<-read.csv("~/Downloads/Paucarpata_Mz_26JUN2017 (1).csv",sep = ';')
  
  #---------------------------------------------------------------------------------- 
   
@@ -362,7 +365,7 @@
     
     #-------------------------------------------------------------------------------  
     #Diferencia C-S v S-C
-    diff1<-setdiff(attack_JLB_RIVERO$UNICODE,aqp_gps_block$UNICODE) # 1 viviendas
+    diff1<-setdiff(attack_JLB_RIVERO$UNICODE,aqp_gps_block$UNICODE) # 3 viviendas
     diff2<-setdiff(aqp_gps_block$UNICODE,attack_JLB_RIVERO$UNICODE) # 3090
     #Interseccion
     interseption<-intersect(attack_JLB_RIVERO$UNICODE, aqp_gps_block$UNICODE)#5168
@@ -370,7 +373,7 @@
     #Merge
     JLB_RIVERO_gps_rociado <- merge(aqp_gps_block,attack_JLB_RIVERO, all= TRUE, by = "UNICODE")
     #Comprobando
-    aux1 <- attack_JLB_RIVERO[attack_JLB_RIVERO$UNICODE%in%diff1,]#2
+    aux1 <- attack_JLB_RIVERO[attack_JLB_RIVERO$UNICODE%in%diff1,]#6
     aux2 <- JLB_RIVERO_gps_rociado[JLB_RIVERO_gps_rociado$UNICODE%in%diff1,]
     aux3 <- JLB_RIVERO_gps_rociado[JLB_RIVERO_gps_rociado$UNICODE%in%diff2,]#3091
     
@@ -460,30 +463,30 @@
     
     #------------------------------------------------------------------------------------      
     #uniendo bases 
-    diff1<-setdiff(attack_SACHACA$UNICODE,aqp_gps_block$UNICODE) #  172viviendas
-    diff2<-setdiff(aqp_gps_block$UNICODE,attack_SACHACA$UNICODE) # 1547Viviendas 
+    diff1<-setdiff(attack_SACHACA$UNICODE,aqp_gps_block$UNICODE) #  166viviendas
+    diff2<-setdiff(aqp_gps_block$UNICODE,attack_SACHACA$UNICODE) # 1551Viviendas 
     #Interseccion
-    interseption<-intersect(attack_SACHACA$UNICODE, aqp_gps_block$UNICODE)#2991
+    interseption<-intersect(attack_SACHACA$UNICODE, aqp_gps_block$UNICODE)#2997
     
     #Merge
     SACHACA_gps_rociado <- merge(aqp_gps_block,attack_SACHACA, all= TRUE, by = "UNICODE")
     #Comprobando
-    aux1 <- attack_SACHACA[attack_SACHACA$UNICODE%in%diff1,]#338 observaciones 
+    aux1 <- attack_SACHACA[attack_SACHACA$UNICODE%in%diff1,]#6 observaciones 
     aux2 <- SACHACA_gps_rociado[SACHACA_gps_rociado$UNICODE%in%diff1,]
     aux3 <- SACHACA_gps_rociado[SACHACA_gps_rociado$UNICODE%in%diff2,]#1547
     
     write.csv(aux1,"~/CLAUDIA-DATOS-/claudia codigos r/dif_roci_aqp/hunter_dif_sir_nogoo.csv",row.names = FALSE)
  #--------------------------------------------------------------------------------   
     #uniendo bases 
-    diff1<-setdiff(attack_TIABAYA$UNICODE,aqp_gps_block$UNICODE) #  113viviendas
+    diff1<-setdiff(attack_TIABAYA$UNICODE,aqp_gps_block$UNICODE) #  105viviendas
     diff2<-setdiff(aqp_gps_block$UNICODE,attack_TIABAYA$UNICODE) # 26Viviendas 
     #Interseccion
-    interseption<-intersect(attack_TIABAYA$UNICODE, aqp_gps_block$UNICODE)#3165
+    interseption<-intersect(attack_TIABAYA$UNICODE, aqp_gps_block$UNICODE)#3173
     
     #Merge
     TIABAYA_gps_rociado <- merge(aqp_gps_block,attack_TIABAYA, all= TRUE, by = "UNICODE")
     #Comprobando
-    aux1 <- attack_TIABAYA[attack_TIABAYA$UNICODE%in%diff1,]#229 observaciones 
+    aux1 <- attack_TIABAYA[attack_TIABAYA$UNICODE%in%diff1,]#208 observaciones 
     aux2 <- TIABAYA_gps_rociado[TIABAYA_gps_rociado$UNICODE%in%diff1,]
     aux3 <- TIABAYA_gps_rociado[TIABAYA_gps_rociado$UNICODE%in%diff2,]#26
     
@@ -580,7 +583,7 @@
   
   setwd('~/claudia codigos r')
   #Resultado de las viviendas de ASA que tienen numero de cuadra
-  write.csv(ASA_gps_rociado,"~/CLAUDIA-DATOS-/claudia codigos r/MERGES_BLOCKS_GPS_ROCIADO/ASA_gps_rociado.csv", row.names = FALSE)
+  write.csv(ASA_gps_rociado,"~/PETM-shiny/Static_Data_formodel/MERGES_BLOCKS_GPS_ROCIADO/ASA_gps_rociado_JUN.csv", row.names = FALSE)
   #Resultado de las viviendas de ASA que NO tienen numero de cuadra
   write.csv(no_block,"~/CLAUDIA-DATOS-/claudia codigos r/no_blocks_arequipa/no_block_ASA.csv", row.names = FALSE)
   
@@ -608,7 +611,7 @@
   write.csv(no_block,"~/CLAUDIA-DATOS-/claudia codigos r/no_blocks_arequipa/no_block_HUNTER.csv", row.names = FALSE)
   
   #Resultado de las viviendas de JLB Y RIVERO que tienen numero de cuadra
-  write.csv(JLB_RIVERO_gps_rociado,"~/CLAUDIA-DATOS-/claudia codigos r/MERGES_BLOCKS_GPS_ROCIADO/JLB_RIVERO_gps_rociado.csv", row.names = FALSE)
+  write.csv(JLB_RIVERO_gps_rociado,"~/PETM-shiny/Static_Data_formodel/MERGES_BLOCKS_GPS_ROCIADO/JLB_RIVERO_gps_rociado_JUN.csv", row.names = FALSE)
   #Resultado de las viviendas de HUNTER que NO tienen numero de cuadra
   write.csv(no_block,"~/CLAUDIA-DATOS-/claudia codigos r/no_blocks_arequipa/no_block_JLB.csv", row.names = FALSE)
   
@@ -633,17 +636,17 @@
   write.csv(no_block,"~/claudia codigos r/no_block_YARABAMBA.csv", row.names = FALSE)
   
   #Resultado de las viviendas de CHARACATO  que tienen numero de cuadra
-  write.csv(CHARACATO_gps_rociado,"~/claudia codigos r/CHARACATO_gps_rociado.csv", row.names = FALSE)
+  write.csv(CHARACATO_gps_rociado,"~/PETM-shiny/Static_Data_formodel/MERGES_BLOCKS_GPS_ROCIADO/CHARACATO_gps_rociado.csv_JUN.csv", row.names = FALSE)
   #Resultado de las viviendas de CHARACATO  que NO tienen numero de cuadra
   write.csv(no_block,"~/claudia codigos r/no_block_CHARACATO.csv", row.names = FALSE)
   
   #Resultado de las viviendas de SACHACA  que tienen numero de cuadra
-  write.csv(SACHACA_gps_rociado,"~/CLAUDIA-DATOS-/claudia codigos r/MERGES_BLOCKS_GPS_ROCIADO/SACHACA_gps_rociado.csv", row.names = FALSE)
+  write.csv(SACHACA_gps_rociado,"~/PETM-shiny/Static_Data_formodel/MERGES_BLOCKS_GPS_ROCIADO/SACHACA_gps_rociado_JUN.csv", row.names = FALSE)
   #Resultado de las viviendas de SACHACA  que NO tienen numero de cuadra
   write.csv(no_block,"~/CLAUDIA-DATOS-/claudia codigos r/no_blocks_arequipa/no_block_SACHACA.csv", row.names = FALSE)
   
   #Resultado de las viviendas de TIABAYA  que tienen numero de cuadra
-  write.csv(TIABAYA_gps_rociado,"~/CLAUDIA-DATOS-/claudia codigos r/MERGES_BLOCKS_GPS_ROCIADO/TIABAYA_gps_rociado.csv", row.names = FALSE)
+  write.csv(TIABAYA_gps_rociado,"~/PETM-shiny/Static_Data_formodel/MERGES_BLOCKS_GPS_ROCIADO/TIABAYA_gps_rociado_JUN.csv", row.names = FALSE)
   #Resultado de las viviendas de TIABAYA  que NO tienen numero de cuadra
   write.csv(no_block,"~/CLAUDIA-DATOS-/claudia codigos r/no_blocks_arequipa/no_block_TIABAYA.csv", row.names = FALSE)
   
@@ -653,13 +656,13 @@
   write.csv(no_block,"~/CLAUDIA-DATOS-/claudia codigos r/no_blocks_arequipa/no_block_SOCABAYA1.csv", row.names = FALSE)
   
  #Resultado de las viviendas de UCHUMAYO   que tienen numero de cuadra
-  write.csv(MIRAFLORES_gps_rociado,"~/CLAUDIA-DATOS-/claudia codigos r/MERGES_BLOCKS_GPS_ROCIADO/MIRAFLORES_rociado.csv", row.names = FALSE)
+  write.csv(MIRAFLORES_gps_rociado,"~/PETM-shiny/Static_Data_formodel/MERGES_BLOCKS_GPS_ROCIADO/MIRAFLORES_rociado_JUN.csv", row.names = FALSE)
   
   #Resultado de las viviendas de TIABAYA  que NO tienen numero de cuadra
   write.csv(no_block,"~/CLAUDIA-DATOS-/claudia codigos r/no_blocks_arequipa/no_block_UCHUMAYO.csv", row.names = FALSE) 
   
   #Resultado de las viviendas de PAUCARPATA   que tienen numero de cuadra
-  write.csv(UCHUMAYO_gps_rociado,"~/CLAUDIA-DATOS-/claudia codigos r/MERGES_BLOCKS_GPS_ROCIADO/UCHUMAYO_gps_rociado.csv", row.names = FALSE)
+  write.csv(UCHUMAYO_gps_rociado,"~/PETM-shiny/Static_Data_formodel/MERGES_BLOCKS_GPS_ROCIADO/UCHUMAYO_gps_rociado_JUN.csv", row.names = FALSE)
   #Resultado de las viviendas de TIABAYA  que NO tienen numero de cuadra
   write.csv(no_block,"~/CLAUDIA-DATOS-/claudia codigos r/no_blocks_arequipa/no_block_UCHUMAYO.csv", row.names = FALSE) 
   

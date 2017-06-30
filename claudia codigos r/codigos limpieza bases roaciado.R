@@ -6,7 +6,7 @@ setwd ("~/CLAUDIA-DATOS-/claudia codigos r")
 library(dplyr)
 library(data.table)
  #LEYENDO EL CONSOLIDADO CON TODOS LOS ROCIADOS HAST EL 2015.
-ATTACK_2006_2015<-read.csv("~/CLAUDIA-DATOS-/claudia codigos r/ATTACK_2006_2015/generalRociadoPA_Claudia_06feb.csv")
+ATTACK_2006_2015<-read.csv("~/CLAUDIA-DATOS-/claudia codigos r/generalRociadoPA_Javier21MAR2017.csv")
 ATTACK_2006_2015<-as.data.table(ATTACK_2006_2015)
 ATTACK_2006_2015[D == "5" & L== "23",L:= "22"]
 
@@ -29,7 +29,7 @@ ATTACK_2006_2015<-ATTACK_2006_2015[P==1]
 #ESCOGIENDO LOS D=7,8,9,13,18,23,24,25.
 ATTACK_2006_2015<-ATTACK_2006_2015[D==7|D==8|D==9|D==13|D==18|D==23|D==24|D==25|D==1|D==4|D==3|D==10|D==11|D==12|D==28|D==5]
 
-
+write.csv(ATTACK_2006_2015,"~/CLAUDIA-DATOS-/claudia codigos r/ATTACK_2006_2015/ATTACK_2006_2016.csv",row.names = FALSE)
 
 
 
