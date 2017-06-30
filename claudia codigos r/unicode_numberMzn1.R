@@ -19,7 +19,7 @@
   
 #Leer los archivos
 #Base de datos CONSOLIDADO GENERAL TODOS LOS DISTRITOS 2006-2015 hasta antes de Cerro Colorado 
-   attack<-read.csv("~/CLAUDIA-DATOS-/claudia codigos r/ATTACK_2006_2015/ATTACK_2006_2015.csv")
+   attack<-read.csv("~/CLAUDIA-DATOS-/claudia codigos r/ATTACK_2006_2015/ATTACK_2006_2016.csv")
    attack$UNICODE <- gsub('\\s+', '',attack$UNICODE)
 #LEYENDO LOS ARCHIVOS QUE CONTIENEn LOS GP/S DE CASAS NORMALES Y ADICIONADAS .
   
