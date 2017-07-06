@@ -55,9 +55,13 @@
   nc_MIRAFLORES <-read.csv ("~/CLAUDIA-DATOS-/Miraflores_mz_corregido.csv")
   #nc_CERRO_COLORADO <-read.csv("~/claudia codigos r/Manzanas _Arequipa/Cerro Colorado/Cerro Colorado MZ.csv", sep = ";")
   nc_CHARACATO <-read.csv("~/Downloads/Characato_Mz_26JUN2017.csv",sep = ';')
+  
   nc_PAUCARPATA<-read.csv("~/Downloads/Paucarpata_Mz_26JUN2017 (1).csv",sep = ';')
- 
- #---------------------------------------------------------------------------------- 
+  nc_PAUCARPATA<- as.data.table(nc_PAUCARPATA)
+  nc_PAUCARPATA[ident=='1.13-51-90',ident:='1.13.51-90']
+  
+  
+  #---------------------------------------------------------------------------------- 
   
    #--SOLO CONSOLIDADO--
   #Extrayendo solo datos de MARIANO MELGAR del consolidado
@@ -572,7 +576,7 @@
 #--------------------------------------------------------------------
   
   #Resultado de las viviendas de Mariano Melgar que tienen numero de cuadra
-  write.csv(mmelgar_gps_rociado,"~/CLAUDIA-DATOS-/claudia codigos r/MERGES_BLOCKS_GPS_ROCIADO/mmelgar_gps_rociado_JUN_2017.csv", row.names = FALSE)
+  write.csv(mmelgar_gps_rociado,"~/PETM-shiny/Static_Data_formodel/MERGES_BLOCKS_GPS_ROCIADO/mmelgar_gps_rociado_JUN_2017.csv", row.names = FALSE)
   #Resultado de las viviendas de Mariano Melgar que NO tienen numero de cuadra
   write.csv(no_block,"~/CLAUDIA-DATOS-/claudia codigos r/no_blocks_arequipa/no_block_MARIANOMELGAR_JUN_2017.csv", row.names = FALSE)
  
@@ -598,7 +602,7 @@
   write.csv(no_block,"~/CLAUDIA-DATOS-/claudia codigos r/no_blocks_arequipa/no_block_CHARACATO.csv", row.names = FALSE)
   
   #Resultado de las viviendas de CHARACATO  que tienen numero de cuadra
-  write.csv(PAUCARPATA_gps_rociado,"~/CLAUDIA-DATOS-/claudia codigos r/MERGES_BLOCKS_GPS_ROCIADO/PAUCARPATA_gps_rociado.csv", row.names = FALSE)
+  write.csv(PAUCARPATA_gps_rociado,"~/PETM-shiny/Static_Data_formodel/MERGES_BLOCKS_GPS_ROCIADO/PAUCARPATA_gps_rociado_JUN.csv", row.names = FALSE)
   #Resultado de las viviendas de CHARACATO  que NO tienen numero de cuadra
   write.csv(no_block,"~/CLAUDIA-DATOS-/claudia codigos r/no_blocks_arequipa/no_block_PAUCARPATA.csv", row.names = FALSE)
   
@@ -621,12 +625,12 @@
   write.csv(no_block,"~/CLAUDIA-DATOS-/claudia codigos r/no_blocks_arequipa/no_block_LAJOYA.csv", row.names = FALSE)
   
   #Resultado de las viviendas de CAYMA  que tienen numero de cuadra
-  write.csv(CAYMA_gps_rociado,"~/claudia codigos r/CAYMA_gps_rociado.csv", row.names = FALSE)
+  write.csv(CAYMA_gps_rociado,"~/PETM-shiny/Static_Data_formodel/MERGES_BLOCKS_GPS_ROCIADO/CAYMA_gps_rociado_JUN.csv", row.names = FALSE)
   #Resultado de las viviendas de CAYMA  que NO tienen numero de cuadra
   write.csv(no_block,"~/claudia codigos r/no_block_CAYMA.csv", row.names = FALSE)
  
   #Resultado de las viviendas de ASA que tienen numero de cuadra
-  write.csv(ASA_gps_rociado,"~/CLAUDIA-DATOS-/claudia codigos r/MERGES_BLOCKS_GPS_ROCIADO/ASA_gps_rociado.csv", row.names = FALSE)
+  write.csv(ASA_gps_rociado,"~/PETM-shiny/Static_Data_formodel/MERGES_BLOCKS_GPS_ROCIADO/ASA_gps_rociado_JUN.csv", row.names = FALSE)
   #Resultado de las viviendas de ASA que NO tienen numero de cuadra
   write.csv(no_block,"~/CLAUDIA-DATOS-/claudia codigos r/no_blocks_arequipa/no_block_ASA.csv", row.names = FALSE)
   
@@ -651,7 +655,7 @@
   write.csv(no_block,"~/CLAUDIA-DATOS-/claudia codigos r/no_blocks_arequipa/no_block_TIABAYA.csv", row.names = FALSE)
   
   #Resultado de las viviendas de TIABAYA  que tienen numero de cuadra
-  write.csv(SOCABAYA_gps_rociado,"~/PETM-shiny/Static_Data_formodel/MERGES_BLOCKS_GPS_ROCIADO/SOCABAYA_gps_rociado_JUNIO.csv", row.names = FALSE)
+  write.csv(SOCABAYA_gps_rociado,"~/PETM-shiny/Static_Data_formodel/MERGES_BLOCKS_GPS_ROCIADO/SOCABAYA_gps_rociado_JUN.csv", row.names = FALSE)
   #Resultado de las viviendas de TIABAYA  que NO tienen numero de cuadra
   write.csv(no_block,"~/CLAUDIA-DATOS-/claudia codigos r/no_blocks_arequipa/no_block_SOCABAYA1.csv", row.names = FALSE)
   
