@@ -20,6 +20,9 @@
 #Leer los archivos
 #Base de datos CONSOLIDADO GENERAL TODOS LOS DISTRITOS 2006-2015 hasta antes de Cerro Colorado 
    attack<-read.csv("~/CLAUDIA-DATOS-/claudia codigos r/ATTACK_2006_2015/ATTACK_2006_2016.csv")
+   attack$I_TRIAT<-as.numeric(attack$I_TRIAT)
+   attack$P_TRIAT<-as.numeric(attack$P_TRIAT)
+   
    attack$UNICODE <- gsub('\\s+', '',attack$UNICODE)
 #LEYENDO LOS ARCHIVOS QUE CONTIENEn LOS GP/S DE CASAS NORMALES Y ADICIONADAS .
   
@@ -56,10 +59,10 @@
   #nc_CERRO_COLORADO <-read.csv("~/claudia codigos r/Manzanas _Arequipa/Cerro Colorado/Cerro Colorado MZ.csv", sep = ";")
   nc_CHARACATO <-read.csv("~/Downloads/Characato_Mz_26JUN2017.csv",sep = ';')
   
-  nc_PAUCARPATA<-read.csv("~/Downloads/Paucarpata_Mz_26JUN2017 (1).csv",sep = ';')
+  nc_PAUCARPATA<-read.csv("~/Downloads/Paucarpata_Mz_26JUN2017 (2).csv",sep = ';')
   nc_PAUCARPATA<- as.data.table(nc_PAUCARPATA)
   nc_PAUCARPATA[ident=='1.13-51-90',ident:='1.13.51-90']
-  
+  nc_PAUCARPATA[]
   
   #---------------------------------------------------------------------------------- 
   
