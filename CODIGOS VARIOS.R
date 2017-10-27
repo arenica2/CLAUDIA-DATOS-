@@ -139,22 +139,22 @@ ggplot(poligonos)
 
 
 
-library(data.table)
+library(data.table)z
 
 
-cerro<-read.csv("~/Participation/inpecciones_participation_cc/CERRO_AVANCE.csv",sep = ";")
+  cerro<-read.csv("~/Downloads/vigilancia cerro octubre.csv",sep = ";")
 cerro<-as.data.table(cerro)
 loc_16<-cerro[, c('P','D','L','V') := tstrsplit(UNI_CODE, ".", fixed=TRUE)]
-loc_16<-cerro[L=='16'& STATUS_INSPECCION=='V']
-LOC_21<-cerro[L=='21'& STATUS_INSPECCION=='V']
-LOC_20<-cerro[L=='20' & STATUS_INSPECCION=='V']
-LOC_17<-cerro[L=='17' & STATUS_INSPECCION=='V']
-LOC_37<-cerro[L=='37' & STATUS_INSPECCION=='V']
+loc_16<-cerro[L=='16'& STATUS_INSPECCION=="inspeccion"]
+LOC_21<-cerro[L=='21'& STATUS_INSPECCION=="inspeccion"]
+LOC_20<-cerro[L=='20' & STATUS_INSPECCION=='inspeccion']
+LOC_17<-cerro[L=='17' & STATUS_INSPECCION=='inspeccion']
+LOC_37<-cerro[L=='37' & STATUS_INSPECCION=='inspeccion']
 LOC_24<-cerro[L=='24' & STATUS_INSPECCION=='inspeccion']
-loc_40<-cerro[L=='40' & STATUS_INSPECCION=='V']
-LOC_41<-cerro[L=='41' & STATUS_INSPECCION=='V']
-LOC_43<-cerro[L=='43' & STATUS_INSPECCION=='V']
-LOC_51<-cerro[L=='51' & STATUS_INSPECCION=='V']
+loc_40<-cerro[L=='40' & STATUS_INSPECCION=='inspeccion']
+LOC_41<-cerro[L=='41' & STATUS_INSPECCION=='inspeccion']
+LOC_43<-cerro[L=='43' & STATUS_INSPECCION=='inspeccion']
+LOC_51<-cerro[L=='51' & STATUS_INSPECCION=='inspeccion']
 LOC_24<-cerro[L=='24' & STATUS_INSPECCION=='inspeccion']
 
 #############example of INLA

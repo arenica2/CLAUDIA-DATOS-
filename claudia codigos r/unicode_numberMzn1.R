@@ -59,7 +59,7 @@
   #nc_CERRO_COLORADO <-read.csv("~/claudia codigos r/Manzanas _Arequipa/Cerro Colorado/Cerro Colorado MZ.csv", sep = ";")
   nc_CHARACATO <-read.csv("~/Downloads/Characato_Mz_26JUN2017.csv",sep = ';')
   
-  nc_PAUCARPATA<-read.csv("~/Downloads/Paucarpata_Mz_26JUN2017 (2).csv",sep = ';')
+  nc_PAUCARPATA<-read.csv("~/Downloads/Paucarpata_Mz_25SET2017.csv ",sep = ';')
   nc_PAUCARPATA<- as.data.table(nc_PAUCARPATA)
   nc_PAUCARPATA[ident=='1.13-51-90',ident:='1.13.51-90']
   nc_PAUCARPATA[]
