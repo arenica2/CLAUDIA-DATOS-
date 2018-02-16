@@ -42,7 +42,18 @@
   nc_SACHACA[nc_SACHACA== "NA"]<-NA
   nc_UCHUMAYO<-read.csv("~/CLAUDIA-DATOS-/PUNTOS  Y MANZANAS CORREGIDOS/Uchumayo_Mz_07FEB2017_SIN20.csv",sep = ",")
   
-  nc_TIABAYA<-read.csv("~/Downloads/Tiabaya_Mz_26JUN2017.csv",sep = ';')
+  nc_TIABAYA<-fread("~/Downloads/Tiabaya_Mz_26JUN2017.csv",sep = ';')
+  nc_TIABAYA<-nc_TIABAYA[ident=='1.24.9.-Los_Perales',ident:='1.24.9-1']
+  nc_TIABAYA<-nc_TIABAYA[ident=='1.24.11A-Cural_de_Tiabaya',ident:='1.24.11A-1']
+  nc_TIABAYA<-nc_TIABAYA[ident=='1.24.12-El_Molino',ident:='1.24.12-1']
+  nc_TIABAYA<-nc_TIABAYA[ident=='1.24.13A-Alto_Tunales',ident:='1.24.13A-1']
+  nc_TIABAYA<-nc_TIABAYA[ident=='1.24.3A-Patasagua_Bajo',ident:='1.24.3A-1']
+  
+  
+                           
+                         
+                       
+  
   nc_SOCABAYA<-read.csv("~/Downloads/Manzanas_Socabaya_19JUN2017_actualizado.csv",sep = ';')
   
   #OBTENIENDO LAS BASES DE  MANZANA ASA ,CAYMA ,CERRO COLORADO,CHARACATO ,MARIANO MELGAR,MIRAFLORES,MOLLEBAYA
@@ -52,17 +63,17 @@
   nc_melgar[ident == "1.10-16-14", ident := "1.10.16-14"]
   nc_melgar<-as.data.frame(nc_melgar)
   
-  nc_CAYMA <-read.csv("~/CLAUDIA-DATOS-/Cayma_mz_corregido.csv", sep = ",")
+  nc_CAYMA <-read.csv("~/CLAUDIA-DATOS-/PUNTOS  Y MANZANAS CORREGIDOS/Cayma_mz_corregido.csv", sep = ",")
   nc_ASA <-read.csv("~/CLAUDIA-DATOS-/PUNTOS  Y MANZANAS CORREGIDOS/ASA_Mz_corregido.csv", sep = ",")
   nc_YARABAMBA<-read.csv ("~/CLAUDIA-DATOS-/PUNTOS  Y MANZANAS CORREGIDOS/Yarabamba_Mz_corregido.csv")
-  nc_MIRAFLORES <-read.csv ("~/CLAUDIA-DATOS-/Miraflores_mz_corregido.csv")
+  nc_MIRAFLORES <-read.csv ("~/CLAUDIA-DATOS-/PUNTOS  Y MANZANAS CORREGIDOS/Miraflores_mz_corregido.csv")
   #nc_CERRO_COLORADO <-read.csv("~/claudia codigos r/Manzanas _Arequipa/Cerro Colorado/Cerro Colorado MZ.csv", sep = ";")
   nc_CHARACATO <-read.csv("~/Downloads/Characato_Mz_26JUN2017.csv",sep = ';')
   
-  nc_PAUCARPATA<-read.csv("~/Downloads/Paucarpata_Mz_25SET2017.csv ",sep = ';')
+  nc_PAUCARPATA<-read.csv("~/Downloads/Paucarpata_Mz_25SET2017.csv",sep = ',')
   nc_PAUCARPATA<- as.data.table(nc_PAUCARPATA)
   nc_PAUCARPATA[ident=='1.13-51-90',ident:='1.13.51-90']
-  nc_PAUCARPATA[]
+  nc_PAUCARPATA<-nc_PAUCARPATA[!ident=="1.13.71-1"]
   
   #---------------------------------------------------------------------------------- 
   
@@ -158,6 +169,7 @@
     #Extrayendo solo datos de  CHARACATO del consolidado
     attack_TIABAYA  <- attack[(1==attack$P & 24==attack$D),]
     #Seleccionando solo los campos que necesito
+    
     attack_TIABAYA <- attack_TIABAYA[,c("UNICODE", "I_TRIAT", "P_TRIAT", "FECHA", "CICLO","TRATADA","RENUENTE","CERRADA","DESHABITADA","LOCAL_PUBLICO","LOTE_VACIO")]
     
     #--SOLO CONSOLIDADO--
@@ -334,10 +346,10 @@
   
 #--------JUNTANDO CONSOLIDADO CON CUADRAS -----
   #Diferencia C-S v S-C
-    diff1<-setdiff(attack_mm$UNICODE,aqp_gps_block$UNICODE) # 28 viviendas
-    diff2<-setdiff(aqp_gps_block$UNICODE,attack_mm$UNICODE) # 3172
+    diff1<-setdiff(attack_mm$UNICODE,aqp_gps_block$UNICODE) # 55 viviendas
+    diff2<-setdiff(aqp_gps_block$UNICODE,attack_mm$UNICODE) # 3751
   #Interseccion
-    interseption<-intersect(attack_mm$UNICODE, aqp_gps_block$UNICODE)#9703
+    interseption<-intersect(attack_mm$UNICODE, aqp_gps_block$UNICODE)#9692
     
   #Merge
     mmelgar_gps_rociado <- merge(aqp_gps_block,attack_mm, all= TRUE, by = "UNICODE")
@@ -345,6 +357,11 @@
     aux1 <- attack_mm[attack_mm$UNICODE%in%diff1,]#78
     aux2 <- mmelgar_gps_rociado[mmelgar_gps_rociado$UNICODE%in%diff1,]#78
     aux3 <- mmelgar_gps_rociado[mmelgar_gps_rociado$UNICODE%in%diff2,]#3762
+    
+    mmelgar_gps_rociado_NA<-mmelgar_gps_rociado[is.na(mmelgar_gps_rociado$LATITUDE)]
+    DUPLICADOS<-mmelgar_gps_rociado_NA[duplicated(mmelgar_gps_rociado_NA$UNICODE)]
+    mmelgar_gps_rociado_NA<-mmelgar_gps_rociado_NA[!duplicated(mmelgar_gps_rociado_NA$UNICODE), ]
+    
     
     write.csv(aux1,"~/CLAUDIA-DATOS-/claudia codigos r/dif_roci_aqp/mmelgar_dif_sir_nogoo.csv",row.names = FALSE)
     
@@ -408,10 +425,10 @@
     #_____________________________________
     
     #uniendo bases 
-    diff1<-setdiff(attack_cayma$UNICODE,aqp_gps_block$UNICODE) #  76viviendas
+    diff1<-setdiff(attack_cayma$UNICODE,aqp_gps_block$UNICODE) #  91viviendas
     diff2<-setdiff(aqp_gps_block$UNICODE,attack_cayma$UNICODE) # 10276
     #Interseccion
-    interseption<-intersect(attack_cayma$UNICODE, aqp_gps_block$UNICODE)#7844
+    interseption<-intersect(attack_cayma$UNICODE, aqp_gps_block$UNICODE)#7829
     
     #Merge
     CAYMA_gps_rociado <- merge(aqp_gps_block,attack_cayma, all= TRUE, by = "UNICODE")
@@ -420,22 +437,28 @@
     aux2 <- CAYMA_gps_rociado[CAYMA_gps_rociado$UNICODE%in%diff1,]
     aux3 <- CAYMA_gps_rociado[CAYMA_gps_rociado$UNICODE%in%diff2,]#10276
     
+    CAYMA_gps_rociado_NA<-CAYMA_gps_rociado[is.na(CAYMA_gps_rociado$LATITUDE)]
+    DUPLICADOS<-CAYMA_gps_rociado_NA[duplicated(CAYMA_gps_rociado_NA$UNICODE)]
+    CAYMA_gps_rociado_NA<-CAYMA_gps_rociado_NA[!duplicated(CAYMA_gps_rociado_NA$UNICODE), ]
     
     write.csv(aux1,"~/CLAUDIA-DATOS-/claudia codigos r/dif_roci_aqp/cayma_dif_sir_nogoo.csv",row.names = FALSE)
  #-----------------------------------------------------------------------------------------   
     #uniendo bases 
     diff1<-setdiff(attack_ASA$UNICODE,aqp_gps_block$UNICODE) #  133viviendas
-    diff2<-setdiff(aqp_gps_block$UNICODE,attack_ASA$UNICODE) # 14335
+    diff2<-setdiff(aqp_gps_block$UNICODE,attack_ASA$UNICODE) # 14369
     #Interseccion
-    interseption<-intersect(attack_ASA$UNICODE, aqp_gps_block$UNICODE)#6563
+    interseption<-intersect(attack_ASA$UNICODE, aqp_gps_block$UNICODE)#6667
     
     #Merge
     ASA_gps_rociado <- merge(aqp_gps_block,attack_ASA, all= TRUE, by = "UNICODE")
     #Comprobando
-    aux1 <- attack_ASA[attack_ASA$UNICODE%in%diff1,]#236 observaciones 
-    aux2 <- ASA_gps_rociado[ASA_gps_rociado$UNICODE%in%diff1,]#236
-    aux3 <- ASA_gps_rociado[ASA_gps_rociado$UNICODE%in%diff2,]#14335 
+    aux1 <- attack_ASA[attack_ASA$UNICODE%in%diff1,]#72 observaciones 
+    aux2 <- ASA_gps_rociado[ASA_gps_rociado$UNICODE%in%diff1,]#72
+    aux3 <- ASA_gps_rociado[ASA_gps_rociado$UNICODE%in%diff2,]#14369 
  
+    ASA_gps_rociado_NA<-ASA_gps_rociado[is.na(ASA_gps_rociado$LATITUDE)]
+    DUPLICADOS<-ASA_gps_rociado_NA[duplicated(ASA_gps_rociado_NA$UNICODE)]
+    ASA_gps_rociado_NA<-ASA_gps_rociado_NA[!duplicated(ASA_gps_rociado_NA$UNICODE), ]
     write.csv(aux1,"~/CLAUDIA-DATOS-/claudia codigos r/dif_roci_aqp/asa_dif_sir_nogoo.csv",row.names = FALSE)
     
     #_--------------------------------------------------------------------
@@ -451,13 +474,19 @@
     aux1 <- attack_Yarabamba[attack_Yarabamba$UNICODE%in%diff1,]#39 observaciones 
     aux2 <- YARABAMBA_gps_rociado[YARABAMBA_gps_rociado$UNICODE%in%diff1,]
     aux3 <- YARABAMBA_gps_rociado[YARABAMBA_gps_rociado$UNICODE%in%diff2,]#176
+    
+    YARABAMBA_gps_rociado_NA<-YARABAMBA_gps_rociado[is.na(YARABAMBA_gps_rociado$LATITUDE)]
+    DUPLICADOS<-YARABAMBA_gps_rociado_NA[duplicated(YARABAMBA_gps_rociado_NA$UNICODE)]
+    
+    YARABAMBA_gps_rociado_NA<-YARABAMBA_gps_rociado_NA[!duplicated(YARABAMBA_gps_rociado_NA$UNICODE), ]
+    
     write.csv(aux1,"~/CLAUDIA-DATOS-/claudia codigos r/dif_roci_aqp/yarabamba_dif_sir_nogoo.csv",row.names = FALSE)
  #------------------------------------------------------------------------   
     #uniendo bases 
-    diff1<-setdiff(attack_CHARACATO$UNICODE,aqp_gps_block$UNICODE) #  580viviendas
-    diff2<-setdiff(aqp_gps_block$UNICODE,attack_CHARACATO$UNICODE) # 917Viviendas 
+    diff1<-setdiff(attack_CHARACATO$UNICODE,aqp_gps_block$UNICODE) #  565viviendas
+    diff2<-setdiff(aqp_gps_block$UNICODE,attack_CHARACATO$UNICODE) # 949 
     #Interseccion
-    interseption<-intersect(attack_CHARACATO$UNICODE, aqp_gps_block$UNICODE)#2548
+    interseption<-intersect(attack_CHARACATO$UNICODE, aqp_gps_block$UNICODE)#2557
     
     #Merge
     CHARACATO_gps_rociado <- merge(aqp_gps_block,attack_CHARACATO, all= TRUE, by = "UNICODE")
@@ -465,30 +494,36 @@
     aux1 <- attack_CHARACATO[attack_CHARACATO$UNICODE%in%diff1,]#712 observaciones 
     aux2 <- CHARACATO_gps_rociado[CHARACATO_gps_rociado$UNICODE%in%diff1,]
     aux3 <- CHARACATO_gps_rociado[CHARACATO_gps_rociado$UNICODE%in%diff2,]#917   
- 
+    
+    
+    CHARACATO_gps_rociado_NA<-CHARACATO_gps_rociado[is.na(CHARACATO_gps_rociado$LATITUDE)]
+    DUPLICADOS<-CHARACATO_gps_rociado_NA[duplicated(CHARACATO_gps_rociado_NA$UNICODE)]
+    
+    CHARACATO_gps_rociado_NA<-CHARACATO_gps_rociado_NA[!duplicated(CHARACATO_gps_rociado_NA$UNICODE), ]
+    
     write.csv(aux1,"~/CLAUDIA-DATOS-/claudia codigos r/dif_roci_aqp/characato_dif_sir_nogoo.csv",row.names = FALSE)
     
     #------------------------------------------------------------------------------------      
     #uniendo bases 
-    diff1<-setdiff(attack_SACHACA$UNICODE,aqp_gps_block$UNICODE) #  166viviendas
-    diff2<-setdiff(aqp_gps_block$UNICODE,attack_SACHACA$UNICODE) # 1551Viviendas 
+    diff1<-setdiff(attack_SACHACA$UNICODE,aqp_gps_block$UNICODE) #  3viviendas
+    diff2<-setdiff(aqp_gps_block$UNICODE,attack_SACHACA$UNICODE) # 2028viviendas 
     #Interseccion
-    interseption<-intersect(attack_SACHACA$UNICODE, aqp_gps_block$UNICODE)#2997
+    interseption<-intersect(attack_SACHACA$UNICODE, aqp_gps_block$UNICODE)#3160
     
     #Merge
     SACHACA_gps_rociado <- merge(aqp_gps_block,attack_SACHACA, all= TRUE, by = "UNICODE")
     #Comprobando
     aux1 <- attack_SACHACA[attack_SACHACA$UNICODE%in%diff1,]#6 observaciones 
     aux2 <- SACHACA_gps_rociado[SACHACA_gps_rociado$UNICODE%in%diff1,]
-    aux3 <- SACHACA_gps_rociado[SACHACA_gps_rociado$UNICODE%in%diff2,]#1547
+    aux3 <- SACHACA_gps_rociado[SACHACA_gps_rociado$UNICODE%in%diff2,]#2028
     
     write.csv(aux1,"~/CLAUDIA-DATOS-/claudia codigos r/dif_roci_aqp/hunter_dif_sir_nogoo.csv",row.names = FALSE)
  #--------------------------------------------------------------------------------   
     #uniendo bases 
-    diff1<-setdiff(attack_TIABAYA$UNICODE,aqp_gps_block$UNICODE) #  105viviendas
+    diff1<-setdiff(attack_TIABAYA$UNICODE,aqp_gps_block$UNICODE) #  9viviendas
     diff2<-setdiff(aqp_gps_block$UNICODE,attack_TIABAYA$UNICODE) # 26Viviendas 
     #Interseccion
-    interseption<-intersect(attack_TIABAYA$UNICODE, aqp_gps_block$UNICODE)#3173
+    interseption<-intersect(attack_TIABAYA$UNICODE, aqp_gps_block$UNICODE)#3269
     
     #Merge
     TIABAYA_gps_rociado <- merge(aqp_gps_block,attack_TIABAYA, all= TRUE, by = "UNICODE")
@@ -496,28 +531,36 @@
     aux1 <- attack_TIABAYA[attack_TIABAYA$UNICODE%in%diff1,]#208 observaciones 
     aux2 <- TIABAYA_gps_rociado[TIABAYA_gps_rociado$UNICODE%in%diff1,]
     aux3 <- TIABAYA_gps_rociado[TIABAYA_gps_rociado$UNICODE%in%diff2,]#26
-    
+    TIABAYA_gps_rociado_NA<-TIABAYA_gps_rociado[is.na(TIABAYA_gps_rociado$LATITUDE)]
+    DUPLICADOS<-TIABAYA_gps_rociado_NA[duplicated(TIABAYA_gps_rociado_NA$UNICODE)]
+    TIABAYA_gps_rociado_NA<-TIABAYA_gps_rociado_NA[!duplicated(TIABAYA_gps_rociado_NA$UNICODE), ]
     write.csv(aux1,"~/CLAUDIA-DATOS-/claudia codigos r/dif_roci_aqp/TIABAYA_dif_sir_nogoo.csv",row.names = FALSE)
     
     #-----------------------------------------------------------------------------------   
     #uniendo bases 
-    diff1<-setdiff(attack_SOCABAYA$UNICODE,aqp_gps_block$UNICODE) #  109viviendas que estan en el rociado pero no en en los puntos con manzana
-    diff2<-setdiff(aqp_gps_block$UNICODE,attack_SOCABAYA$UNICODE) # 5345Viviendas que estan en aqp pero que no estan en el rociado  
+    diff1<-setdiff(attack_SOCABAYA$UNICODE,aqp_gps_block$UNICODE) #  37VI que estan en el rociado pero no en en los puntos con manzana
+    diff2<-setdiff(aqp_gps_block$UNICODE,attack_SOCABAYA$UNICODE) # 5442 VIVIENDAS que estan en aqp pero que no estan en el rociado  
     #Interseccion
-    interseption<-intersect(attack_SOCABAYA$UNICODE, aqp_gps_block$UNICODE)#10172 que coinciden en amabas tablas 
+    interseption<-intersect(attack_SOCABAYA$UNICODE, aqp_gps_block$UNICODE)#10244 que coinciden en amabas tablas 
     
     #Merge
     SOCABAYA_gps_rociado <- merge(aqp_gps_block,attack_SOCABAYA, all= TRUE, by = "UNICODE")#24966 resgistros entre roaciadas 
     #Comprobando
-    aux1 <- attack_SOCABAYA[attack_SOCABAYA$UNICODE%in%diff1,]#201 observaciones 
-    aux2 <- SOCABAYA_gps_rociado[SOCABAYA_gps_rociado$UNICODE%in%diff1,]#201 observaciones 
-    aux3 <- SOCABAYA_gps_rociado[SOCABAYA_gps_rociado$UNICODE%in%diff2,]#5345
+    aux1 <- attack_SOCABAYA[attack_SOCABAYA$UNICODE%in%diff1,]#74 observaciones 
+    aux2 <- SOCABAYA_gps_rociado[SOCABAYA_gps_rociado$UNICODE%in%diff1,]#74 observaciones 
+    aux3 <- SOCABAYA_gps_rociado[SOCABAYA_gps_rociado$UNICODE%in%diff2,]#5442
 
+    SOCABAYA_gps_rociado_NA<-SOCABAYA_gps_rociado[is.na(SOCABAYA_gps_rociado$LATITUDE)]
+    DUPLICADOS<-SOCABAYA_gps_rociado_NA[duplicated(SOCABAYA_gps_rociado_NA$UNICODE)]
+    SOCABAYA_gps_rociado_NA<-SOCABAYA_gps_rociado_NA[!duplicated(SOCABAYA_gps_rociado_NA$UNICODE), ]
+    
+    
+    
     write.csv(aux1,"~/CLAUDIA-DATOS-/claudia codigos r/dif_roci_aqp/socabaya_dif_sir_nogoo.csv",row.names = FALSE)
     #------------------------------------------------------------------------------    
     #uniendo bases PAUCARPATA 2006-2009
-    diff1<-setdiff(attack_PAUCARPATA$UNICODE,aqp_gps_block$UNICODE) #  701viviendas
-    diff2<-setdiff(aqp_gps_block$UNICODE,attack_PAUCARPATA$UNICODE) # 7741Viviendas 
+    diff1<-setdiff(attack_PAUCARPATA$UNICODE,aqp_gps_block$UNICODE) #  73viviendas
+    diff2<-setdiff(aqp_gps_block$UNICODE,attack_PAUCARPATA$UNICODE) # 6880Viviendas 
     #Interseccion
     interseption<-intersect(attack$UNICODE,aqp_gps_block$UNICODE)#19872
     
@@ -526,7 +569,11 @@
     #Comprobando
     aux1 <- attack_PAUCARPATA[attack_PAUCARPATA$UNICODE%in%diff1,]# 805 observaciones 
     aux2 <- PAUCARPATA_gps_rociado[PAUCARPATA_gps_rociado$UNICODE%in%diff1,]
-    aux3 <- PAUCARPATA_gps_rociado[PAUCARPATA_gps_rociado$UNICODE%in%diff2,]#7741 houses 
+    aux3 <- PAUCARPATA_gps_rociado[PAUCARPATA_gps_rociado$UNICODE%in%diff2,]#6880 houses 
+    
+    PAUCARPATA_gps_rociado_NA<-PAUCARPATA_gps_rociado[is.na(PAUCARPATA_gps_rociado$LATITUDE)]
+    DUPLICADOS<-PAUCARPATA_gps_rociado_NA[duplicated(PAUCARPATA_gps_rociado_NA$UNICODE)]
+    PAUCARPATA_gps_rociado_NA<-PAUCARPATA_gps_rociado_NA[!duplicated(PAUCARPATA_gps_rociado_NA$UNICODE), ]
     
     
     write.csv(aux1,"~/CLAUDIA-DATOS-/claudia codigos r/dif_roci_aqp/PAUCARPATA_dif_sir_nogoo.csv",row.names = FALSE)
@@ -559,21 +606,27 @@
     aux2 <- UCHUMAYO_gps_rociado[UCHUMAYO_gps_rociado$UNICODE%in%diff1,]
     aux3 <- UCHUMAYO_gps_rociado[UCHUMAYO_gps_rociado$UNICODE%in%diff2,]#1215
     
+    UCHUMAYO_gps_rociado_NA<-UCHUMAYO_gps_rociado[is.na(UCHUMAYO_gps_rociado$LATITUDE)]
+    DUPLICADOS<-UCHUMAYO_gps_rociado_NA[duplicated(UCHUMAYO_gps_rociado_NA$UNICODE)]
+    UCHUMAYO_gps_rociado_NA<-UCHUMAYO_gps_rociado_NA[!duplicated(UCHUMAYO_gps_rociado_NA$UNICODE), ]
+    
     write.csv(aux1,"~/CLAUDIA-DATOS-/claudia codigos r/dif_roci_aqp/uchumayo_dif_sir_nogoo.csv",row.names = FALSE)
     
     #------------------------------------------------------------------------------------      
     #uniendo bases 
-    diff1<-setdiff(attack_MIRAFLORES$UNICODE,aqp_gps_block$UNICODE) #  123viviendas
-    diff2<-setdiff(aqp_gps_block$UNICODE,attack_MIRAFLORES$UNICODE) # 4234Viviendas 
+    diff1<-setdiff(attack_MIRAFLORES$UNICODE,aqp_gps_block$UNICODE) #  9viviendas
+    diff2<-setdiff(aqp_gps_block$UNICODE,attack_MIRAFLORES$UNICODE) # 4238Viviendas 
     #Interseccion
-    interseption<-intersect(attack_MIRAFLORES$UNICODE, aqp_gps_block$UNICODE)#8278
+    interseption<-intersect(attack_MIRAFLORES$UNICODE, aqp_gps_block$UNICODE)#8270
     #Merge
     MIRAFLORES_gps_rociado <- merge(aqp_gps_block,attack_MIRAFLORES, all= TRUE, by = "UNICODE")
     #Comprobando
     aux1 <- attack_MIRAFLORES[attack_MIRAFLORES$UNICODE%in%diff1,]#243 observaciones 
     aux2 <- MIRAFLORES_gps_rociado[MIRAFLORES_gps_rociado$UNICODE%in%diff1,]
     aux3 <- MIRAFLORES_gps_rociado[MIRAFLORES_gps_rociado$UNICODE%in%diff2,]#4234
-    
+    MIRAFLORES_gps_rociado_NA<-MIRAFLORES_gps_rociado[is.na(MIRAFLORES_gps_rociado$LATITUDE)]
+    DUPLICADOS<-MIRAFLORES_gps_rociado_NA[duplicated(MIRAFLORES_gps_rociado_NA$UNICODE)]
+    MIRAFLORES_gps_rociado_NA<-MIRAFLORES_gps_rociado_NA[!duplicated(MIRAFLORES_gps_rociado_NA$UNICODE), ]
 #--------------------------------------------------------------------  
 #Imprimiendo Resultados ROCIADOS DEL 2009 EN ADELANTE 
 #--------------------------------------------------------------------
@@ -648,12 +701,12 @@
   write.csv(no_block,"~/claudia codigos r/no_block_CHARACATO.csv", row.names = FALSE)
   
   #Resultado de las viviendas de SACHACA  que tienen numero de cuadra
-  write.csv(SACHACA_gps_rociado,"~/PETM-shiny/Static_Data_formodel/MERGES_BLOCKS_GPS_ROCIADO/SACHACA_gps_rociado_JUN.csv", row.names = FALSE)
+  write.csv(SACHACA_gps_rociado,"~/PETM-shiny/Static_Data_formodel/MERGES_BLOCKS_GPS_ROCIADO/Sachaca_gps_rociado.csv", row.names = FALSE)
   #Resultado de las viviendas de SACHACA  que NO tienen numero de cuadra
   write.csv(no_block,"~/CLAUDIA-DATOS-/claudia codigos r/no_blocks_arequipa/no_block_SACHACA.csv", row.names = FALSE)
   
   #Resultado de las viviendas de TIABAYA  que tienen numero de cuadra
-  write.csv(TIABAYA_gps_rociado,"~/PETM-shiny/Static_Data_formodel/MERGES_BLOCKS_GPS_ROCIADO/TIABAYA_gps_rociado_JUN.csv", row.names = FALSE)
+  write.csv(TIABAYA_gps_rociado,"~/PETM-shiny/Static_Data_formodel/MERGES_BLOCKS_GPS_ROCIADO/Tiabaya_gps_rociado.csv", row.names = FALSE)
   #Resultado de las viviendas de TIABAYA  que NO tienen numero de cuadra
   write.csv(no_block,"~/CLAUDIA-DATOS-/claudia codigos r/no_blocks_arequipa/no_block_TIABAYA.csv", row.names = FALSE)
   
