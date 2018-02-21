@@ -24,20 +24,32 @@
    attack$P_TRIAT<-as.numeric(attack$P_TRIAT)
    
    attack$UNICODE <- gsub('\\s+', '',attack$UNICODE)
-#LEYENDO LOS ARCHIVOS QUE CONTIENEn LOS GP/S DE CASAS NORMALES Y ADICIONADAS .
+
+   DUPLICADOS<-attack[duplicated(attack$UNICODE),]
+   
+   attack<-attack[!duplicated(attack$UNICODE), ]
+   
+   table(attack$TRATADA=='1')
+   
+   table(attack$CICLO=='1'& attack$TRATADA=='1')
+   table(attack$CICLO=='2'& attack$TRATADA=='1')
+   
+   
+   
+   #LEYENDO LOS ARCHIVOS QUE CONTIENEn LOS GP/S DE CASAS NORMALES Y ADICIONADAS .
   
      casas_aqp<-read.csv("~/PETM-shiny/unicode_numberMzn/AREQUIPA_GPS_GOOGLE/AQP_GPS_GOOGLE_EARTH_PUNTOS_05_jun_2017.csv",sep = ',')
      casas_aqp$UNICODE <- gsub('\\s+', '',casas_aqp$UNICODE)
   #OBTENIENDO LAS BASES DE MANZANA  HUNTER ,JLB Y RIVERO ,LA JOYA ,SACHACA,UCHUMAYO,TIABAYA Y SOCABAYA 
   
-   nc_HUNTER<-read.csv("~/CLAUDIA-DATOS-/Hunter_Mz_06FEB2017.csv")
+   nc_HUNTER<-read.csv("~/CLAUDIA-DATOS-/PUNTOS  Y MANZANAS CORREGIDOS/Hunter_Mz_06FEB2017.csv")
    nc_HUNTER[nc_HUNTER==" "]<-"NA"
   
   nc_JLB_RIVERO<-read.csv("~/Downloads/JLByRivero_Mz_26JUN2017.csv",sep = ";")
   nc_YARABAMBA<-read.csv("~/CLAUDIA-DATOS-/PUNTOS  Y MANZANAS CORREGIDOS/Yarabamba_Mz_corregido.csv",sep = ",")
   
   
-  nc_LAJOYA<-read.csv("~/CLAUDIA-DATOS-/La_Joya_Mz_corregido.csv")
+  nc_LAJOYA<-read.csv("~/CLAUDIA-DATOS-/PUNTOS  Y MANZANAS CORREGIDOS/La_Joya_Mz_corregido.csv")
   nc_SACHACA<-read.csv("~/Downloads/Sachaca_Mz_26JUN2017 (1).csv",sep = ';')
   nc_SACHACA[nc_SACHACA== "NA"]<-NA
   nc_UCHUMAYO<-read.csv("~/CLAUDIA-DATOS-/PUNTOS  Y MANZANAS CORREGIDOS/Uchumayo_Mz_07FEB2017_SIN20.csv",sep = ",")
@@ -370,12 +382,13 @@
     diff1<-setdiff(attack_HUNTER$UNICODE,aqp_gps_block$UNICODE) # 19 viviendas las que etsan en el ataque pero no tenemos puntos 
     diff2<-setdiff(aqp_gps_block$UNICODE,attack_HUNTER$UNICODE) # 597 viviendas que hay  en aqp_block
     #Interseccion
-    interseption<-intersect(attack_HUNTER$UNICODE, aqp_gps_block$UNICODE)#10365
+    interseption<-intersect(attack_HUNTER$UNICODE, aqp_gps_block$UNICODE)#10379
     #Merge
     HUNTER_gps_rociado <- merge(aqp_gps_block,attack_HUNTER, all= TRUE, by = "UNICODE")
     
     faltantes<-HUNTER_gps_rociado[which(is.na(HUNTER_gps_rociado$LATITUDE))]
     duplicados<-faltantes[duplicated(faltantes$UNICODE)]
+    
     #Comprobando
     aux1 <- attack_HUNTER[attack_HUNTER$UNICODE%in%diff1,]#131 VIVIENDAS 
     aux2 <- HUNTER_gps_rociado[HUNTER_gps_rociado$UNICODE%in%diff1,]
@@ -407,10 +420,10 @@
     
 #---------------------------------------------
     #Diferencia C-S v S-C
-    diff1<-setdiff(attack_LA_JOYA$UNICODE,aqp_gps_block$UNICODE) #  933viviendas
-    diff2<-setdiff(aqp_gps_block$UNICODE,attack_LA_JOYA$UNICODE) # 344
+    diff1<-setdiff(attack_LA_JOYA$UNICODE,aqp_gps_block$UNICODE) #  973viviendas
+    diff2<-setdiff(aqp_gps_block$UNICODE,attack_LA_JOYA$UNICODE) # 343
     #Interseccion
-    interseption<-intersect(attack_LA_JOYA$UNICODE, aqp_gps_block$UNICODE)#4676
+    interseption<-intersect(attack_LA_JOYA$UNICODE, aqp_gps_block$UNICODE)#4636
     
     #Merge
     LA_JOYA_gps_rociado <- merge(aqp_gps_block,attack_LA_JOYA, all= TRUE, by = "UNICODE")#10204
@@ -419,6 +432,10 @@
     aux2 <- LA_JOYA_gps_rociado[LA_JOYA_gps_rociado$UNICODE%in%diff1,]
     aux3 <- LA_JOYA_gps_rociado[LA_JOYA_gps_rociado$UNICODE%in%diff2,]#344
 
+    LA_JOYA_gps_rociado_NA<-LA_JOYA_gps_rociado[is.na(LA_JOYA_gps_rociado$LATITUDE)]
+    DUPLICADOS<-LA_JOYA_gps_rociado_NA[duplicated(LA_JOYA_gps_rociado_NA$UNICODE)]
+    LA_JOYA_gps_rociado_NA<-LA_JOYA_gps_rociado_NA[!duplicated(LA_JOYA_gps_rociado_NA$UNICODE), ]
+    
     write.csv(aux1,"~/CLAUDIA-DATOS-/claudia codigos r/dif_roci_aqp/lajoya_dif_sir_nogoo.csv",row.names = FALSE)
     
     
@@ -666,7 +683,7 @@
   
   
   #Resultado de las viviendas de HUNTER que tienen numero de cuadra
-  write.csv(HUNTER_gps_rociado,"~/PETM-shiny/Static_Data_formodel/MERGES_BLOCKS_GPS_ROCIADO/HUNTER_gps_rociado_JUN.csv", row.names = FALSE)
+  write.csv(HUNTER_gps_rociado,"~/PETM-shiny/Static_Data_formodel/MERGES_BLOCKS_GPS_ROCIADO/hunter_gps_rociado.csv", row.names = FALSE)
   #Resultado de las viviendas de HUNTER que NO tienen numero de cuadra
   write.csv(no_block,"~/CLAUDIA-DATOS-/claudia codigos r/no_blocks_arequipa/no_block_HUNTER.csv", row.names = FALSE)
   
