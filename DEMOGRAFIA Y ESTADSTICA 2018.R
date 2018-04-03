@@ -26,7 +26,7 @@ peru3 <- getData('GADM', country=c('PER'), level=3, path=tdcero)
 
 # Plot shapefiles
 #plot(peru0)
-plot(shapefile)
+plot(peru1)
 plot(peru2)
 plot(peru3)
 
@@ -43,7 +43,7 @@ names(peru_2@data)
 head(peru_2@data, 3)
 # OBJECTID ID_0 ISO NAME_0 ID_1   NAME_1 ID_2      NAME_2   HASC_2 CCN_2 CCA_2
 # 1        1  178 PER   Peru    1 Amazonas    1       Bagua PE.AM.BG    NA      
-# 2        2  178 PER   Peru    1 Amazonas    2     Bongará PE.AM.BN    NA      
+# 2        2  178 PER   Peru    1 Amazonas    2     Bongar? PE.AM.BN    NA      
 # 3        3  178 PER   Peru    1 Amazonas    3 Chachapoyas PE.AM.CP    NA      
 # TYPE_2 ENGTYPE_2 NL_NAME_2 VARNAME_2
 # 1 Provincia  Province                    
@@ -86,7 +86,7 @@ levels(AQP_AQP_districts_df$fNAME_3)
 # [11] "Mariano Melgar"                "Miraflores"                   
 # [13] "Mollebaya"                     "Paucarpata"                   
 # [15] "Pocsi"                         "Polobaya"                     
-# [17] "Quequeña"                      "Sabandia"                     
+# [17] "Queque?a"                      "Sabandia"                     
 # [19] "Sachaca"                       "San Juan de Siguas"           
 # [21] "San Juan de Tarucani"          "Santa Isabel de Siguas"       
 # [23] "Santa Rita de Siguas"          "Socabaya"                     
@@ -143,7 +143,7 @@ AQP_AQP_districts$NAME_3 <- recode(AQP_AQP_districts$NAME_3,
                                    `Mollebaya` = "MOLLEBAYA",
                                    `Pocsi` = "POCSI",
                                    `Polobaya` = "POLOBAYA",
-                                   `Quequeña` = "QUEQUEÑA",
+                                   `Queque?a` = "QUEQUE?A",
                                    `Sabandia` = "SABANDIA",
                                    `San Juan de Siguas` = "S.J. Siguas",
                                    `San Juan de Tarucani` = "S.J. Tarucani",
@@ -184,7 +184,7 @@ districts.i <- c("A.S.A.", "CAYMA", "C. COLORADO", "CHARACATO", "HUNTER",
 # tasa de fecundidad ,tasa global de fecundidad y esperanza de vida al nacer
 
 indicadores<-fread("~/CLAUDIA-DATOS-/cap03030.csv")
-
+indicadores<-transpose(indicadores)
 
 map <- get_map(location = c(lon =-71, lat = -16),
                zoom = 5, # 5 to set the map a country.
