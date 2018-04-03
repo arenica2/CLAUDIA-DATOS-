@@ -49,7 +49,8 @@ head(peru_2@data, 3)
 # 1 Provincia  Province                    
 # 2 Provincia  Province             Bongart
 # 3 Provincia  Province  
-
+Table(peru_2$ID_0)
+peru<-peru2[peru2$ID_0]
 # Keep Arequipa only. It has Arequipa region with its 8 provinces
 AQP_prov <-  peru_2[peru_2$ID_1==4,]
 AQP_prov_df <- AQP_prov@data
@@ -204,7 +205,7 @@ peru_3<-shapefile("~/Spatial-surveillance/MAP_CODES/PERU_SHAPES/PER_adm3.shp")
 
 
 # Next the shapefile has to be converted to a dataframe for use in ggplot2
-shapefile_df <- fortify(peru_1)
+shapefile_df <- fortify(peru_2)
 
 # Now the shapefile can be plotted as either a geom_path or a geom_polygon.
 # Paths handle clipping better. Polygons can be filled.
@@ -222,5 +223,43 @@ map_projected <- map +
   coord_map()
 
 print(map_projected)
+
+aqp <- AQP_AQP_districts
+aqp@data$id <- row.names(aqp)
+aqp_df <- fortify(aqp, region="id")
+aqp.f <- aqp_df
+
+p <- ggplot(aqp.f, aes(long, lat, group=id)) +
+  geom_polygon(colour='blue', fill='white')
+p # lines
+
+peru<-
+
+
+
+
+elbow_room1 <- ca_base + 
+  geom_polygon(data = cacopa, aes(fill = people_per_mile), color = "white") +
+  geom_polygon(color = "black", fill = NA) +
+  theme_bw() +
+
+setnames(indicadores,'V1','Nacimientos anuales: B')
+setnames(indicadores,'V2','Tasa bruta de natalidadb (por mil)') 
+setnames(indicadores,'V3','Tasa global de fecundidad') 
+setnames(indicadores,'V4','Tasa bruta de reproduccion') 
+setnames(indicadores,'V5','Muertes anuales: D') 
+setnames(indicadores,'V6','Tasa bruta de mortalidadd (por mil)') 
+setnames(indicadores,'V7','Esperanza de vida al nacer Ambos sexos') 
+setnames(indicadores,'V8','Esperanza de vida al nacerHombres')
+setnames(indicadores,'V9','Esperanza de vida al nacer Mujeres')
+setnames(indicadores,'V10','Tasa de mortalidad infantil (por mil nacidos vivos)')
+setnames(indicadores,'V11','Crecimiento anual: B-D')
+setnames(indicadores,'V12','Tasa de crecimiento natural,b-d (por cien)')
+setnames(indicadores,'V13',' Migracion neta anual: M')
+indicadores<-indicadores[!c(1),] 
+
+
+
+
 
 
