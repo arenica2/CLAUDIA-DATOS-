@@ -34,16 +34,33 @@
    table(attack$CICLO=='1'& attack$TRATADA=='1')
    table(attack$CICLO=='2'& attack$TRATADA=='1')
    
-   
-   
+ #leyendo 
+   encuestas<-fread("~/Participation/merge_participacion/bd/encuestas_pre_rociado_2015.csv")
+   table(encuestas$L)
    #LEYENDO LOS ARCHIVOS QUE CONTIENEn LOS GP/S DE CASAS NORMALES Y ADICIONADAS .
   
      casas_aqp<-read.csv("~/PETM-shiny/unicode_numberMzn/AREQUIPA_GPS_GOOGLE/AQP_GPS_GOOGLE_EARTH_PUNTOS_05_jun_2017.csv",sep = ',')
      casas_aqp$UNICODE <- gsub('\\s+', '',casas_aqp$UNICODE)
   #OBTENIENDO LAS BASES DE MANZANA  HUNTER ,JLB Y RIVERO ,LA JOYA ,SACHACA,UCHUMAYO,TIABAYA Y SOCABAYA 
-  
-   nc_HUNTER<-read.csv("~/CLAUDIA-DATOS-/PUNTOS  Y MANZANAS CORREGIDOS/Hunter_Mz_06FEB2017.csv")
-   nc_HUNTER[nc_HUNTER==" "]<-"NA"
+     nc_CCOLORADO<-read.csv("~/Downloads/CerroColorado_Mz_15FEB2017.csv")
+     nc_CCOLORADO[nc_CCOLORADO==" "]<-"NA"
+     nc_CCOLORADO<-as.data.table(nc_CCOLORADO)
+     nc_CCOLORADO<-nc_CCOLORADO[,c('codeloc','block'):=tstrsplit(ident,'-', fixed=TRUE)]
+     nc_CCOLORADO<-nc_CCOLORADO[codeloc=='1.4.1'|codeloc=='1.4.2'|codeloc=='1.4.3'|codeloc=='1.4.4'|codeloc=='1.4.5'|codeloc=='1.4.14'|codeloc=='1.4.15'
+                                |codeloc=='1.4.6'|codeloc=='1.4.8'|codeloc=='1.4.9'|codeloc=='1.4.10'|codeloc=='1.4.11'|
+                                  codeloc=='1.4.12'|codeloc=='1.4.13'|codeloc=='1.4.16'|codeloc=='1.4.17'|codeloc=='1.4.18'|codeloc=='1.4.19'|codeloc=='1.4.20'|
+                                codeloc=='1.4.21'|codeloc=='1.4.22'|codeloc=='1.4.23'|codeloc=='1.4.24'|codeloc=='1.4.26'|
+                                codeloc=='1.4.34'|codeloc=='1.4.35'|codeloc=='1.4.36'|codeloc=='1.4.37'|codeloc=='1.4.38'|codeloc=='1.4.39'|
+                                  codeloc=='1.4.40'|codeloc=='1.4.41'|codeloc=='1.4.42'|codeloc=='1.4.43'|codeloc=='1.4.44'|codeloc=='1.4.45'|
+                                  codeloc=='1.4.46'|codeloc=='1.4.47'|codeloc=='1.4.48'|codeloc=='1.4.49'|codeloc=='1.4.51'|
+                                  codeloc=='1.4.52'|codeloc=='1.4.53'|codeloc=='1.4.69'|codeloc=='1.4.70'|codeloc=='1.4.71'|
+                                  codeloc=='1.4.73'|codeloc=='1.4.74'|codeloc=='1.4.75'|codeloc=='1.4.76'|codeloc=='1.4.77'|
+                                  codeloc=='1.4.83'|codeloc=='1.4.84'|codeloc=='1.4.85'|codeloc=='1.4.93']
+    
+     
+     
+  nc_HUNTER<-read.csv("~/CLAUDIA-DATOS-/PUNTOS  Y MANZANAS CORREGIDOS/Hunter_Mz_06FEB2017.csv")
+  nc_HUNTER[nc_HUNTER==" "]<-"NA"
   
   nc_JLB_RIVERO<-read.csv("~/Downloads/JLByRivero_Mz_26JUN2017.csv",sep = ";")
   nc_YARABAMBA<-read.csv("~/CLAUDIA-DATOS-/PUNTOS  Y MANZANAS CORREGIDOS/Yarabamba_Mz_corregido.csv",sep = ",")
@@ -97,7 +114,14 @@
   attack_mm <- as.data.table(attack_mm)
   attack_mm$UNICODE <- gsub("\\s+", "", attack_mm$UNICODE)
   
+  #--SOLO CONSOLIDADO--
+  #Extrayendo solo datos de cerro colorado del consolidado
+  attack_cc <- attack[(1==attack$P & 4==attack$D),]
+  #Seleccionando solo los campos que necesito
   
+  attack_cc <- attack_cc[,c("UNICODE", "I_TRIAT", "P_TRIAT", "FECHA", "CICLO","TRATADA","RENUENTE","CERRADA","DESHABITADA","LOCAL_PUBLICO","LOTE_VACIO")]
+  attack_cc <- as.data.table(attack_cc)
+  attack_cc$UNICODE <- gsub("\\s+", "", attack_cc$UNICODE)
   
   
 #--------------------------
@@ -168,6 +192,7 @@
     #--SOLO CONSOLIDADO--
     #Extrayendo solo datos de  CHARACATO del consolidado
     attack_CHARACATO  <- attack[(1==attack$P & 5==attack$D),]
+   
     #Seleccionando solo los campos que necesito
     attack_CHARACATO <- attack_CHARACATO[,c("UNICODE", "I_TRIAT", "P_TRIAT", "FECHA", "CICLO","TRATADA","RENUENTE","CERRADA","DESHABITADA","LOCAL_PUBLICO","LOTE_VACIO")]
  
@@ -211,7 +236,10 @@
   #duplicados <- duplicados[order(duplicados$UNICODE),]
   #casas_aqp<-casas_aqp[!duplicated(casas_aqp$UNICODE), ]
   
-  #indice_dupli <- casas_aqp_total[which(duplicated(casas_aqp_total$UNICODE)),1]
+  
+    
+    
+    #indice_dupli <- casas_aqp_total[which(duplicated(casas_aqp_total$UNICODE)),1]
   
   #duplicados<-casas_aqp_total[casas_aqp_total$UNICODE %in% indice_dupli,]
   #duplicados <- duplicados[order(duplicados$UNICODE),]
@@ -239,7 +267,7 @@
   nc_polygon <- nc_SOCABAYA
   nc_polygon <- nc_UCHUMAYO
   nc_polygon <- nc_MIRAFLORES
-  
+  nc_polygon <- nc_CCOLORADO
   old_casa_aqp <- casas_aqp
   
 #Convirtiendo de factor a character o numero a caracter
@@ -255,7 +283,8 @@
   nc_polygon$num_localidad <- NA
   nc_polygon$num_cuadra <- NA
 
-#Creando variables
+
+  #Creando variables
   x<-NULL
   y<-NULL
   distrito <- 0
@@ -356,7 +385,28 @@
     i<-i+1
   }
   
-#--------JUNTANDO CONSOLIDADO CON CUADRAS -----
+  #--------JUNTANDO CONSOLIDADO CON CUADRAS -----
+  #Diferencia C-S v S-C
+  diff1<-setdiff(attack_cc$UNICODE,aqp_gps_block$UNICODE) # 55 viviendas
+  diff2<-setdiff(aqp_gps_block$UNICODE,attack_cc$UNICODE) # 3751
+  #Interseccion
+  interseption<-intersect(attack_cc$UNICODE, aqp_gps_block$UNICODE)#9692
+  
+  #Merge
+  ccerro_gps_rociado <- merge(aqp_gps_block,attack_cc, all= TRUE, by = "UNICODE")
+  #Comprobando
+  aux1 <- attack_cc[attack_cc$UNICODE%in%diff1,]#381 auxuliares la mayoria
+  aux2 <- ccerro_gps_rociado[ccerro_gps_rociado$UNICODE%in%diff1,]#381
+  aux3 <- ccerro_gps_rociado[ccerro_gps_rociado$UNICODE%in%diff2,]#9736
+  
+  ccerro_gps_rociado_NA<-ccerro_gps_rociado[is.na(ccerro_gps_rociado$LATITUDE)]
+  DUPLICADOS<-ccerro_gps_rociado_NA[duplicated(ccerro_gps_rociado_NA$UNICODE)]
+  ccerro_gps_rociado_NA<-ccerro_gps_rociado_NA[!duplicated(ccerro_gps_rociado_NA$UNICODE), ]
+  
+  
+  write.csv(aux1,"~/CLAUDIA-DATOS-/claudia codigos r/dif_roci_aqp/mmelgar_dif_sir_nogoo.csv",row.names = FALSE)
+  
+  #--------JUNTANDO CONSOLIDADO CON CUADRAS -----
   #Diferencia C-S v S-C
     diff1<-setdiff(attack_mm$UNICODE,aqp_gps_block$UNICODE) # 55 viviendas
     diff2<-setdiff(aqp_gps_block$UNICODE,attack_mm$UNICODE) # 3751
@@ -517,7 +567,7 @@
     DUPLICADOS<-CHARACATO_gps_rociado_NA[duplicated(CHARACATO_gps_rociado_NA$UNICODE)]
     
     CHARACATO_gps_rociado_NA<-CHARACATO_gps_rociado_NA[!duplicated(CHARACATO_gps_rociado_NA$UNICODE), ]
-    
+    write.csv(CHARACATO_gps_rociado,"~/PETM-shiny/autoModel/model/input/MERGES_BLOCKS_GPS_ROCIADO/Characato_gps_rociado.csv")
     write.csv(aux1,"~/CLAUDIA-DATOS-/claudia codigos r/dif_roci_aqp/characato_dif_sir_nogoo.csv",row.names = FALSE)
     
     #------------------------------------------------------------------------------------      
@@ -678,6 +728,14 @@
   write.csv(PAUCARPATA_gps_rociado,"~/PETM-shiny/Static_Data_formodel/MERGES_BLOCKS_GPS_ROCIADO/PAUCARPATA_gps_rociado_JUN.csv", row.names = FALSE)
   #Resultado de las viviendas de CHARACATO  que NO tienen numero de cuadra
   write.csv(no_block,"~/CLAUDIA-DATOS-/claudia codigos r/no_blocks_arequipa/no_block_PAUCARPATA.csv", row.names = FALSE)
+  
+  
+  
+  
+  #Resultado de las viviendas de cwerro solo rociado que tienen numero de cuadra
+  write.csv(ccerro_gps_rociado,"~/PETM-shiny/Static_Data_formodel/MERGES_BLOCKS_GPS_ROCIADO/cerro_gps_rociado.csv", row.names = FALSE)
+  #Resultado de las viviendas de HUNTER que NO tienen numero de cuadra
+  write.csv(no_block,"~/CLAUDIA-DATOS-/claudia codigos r/no_blocks_arequipa/no_HUNTER.csv", row.names = FALSE)
   
   
   
